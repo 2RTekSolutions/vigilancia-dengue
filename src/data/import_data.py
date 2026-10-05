@@ -1,6 +1,5 @@
-import os
-
 import requests
+
 
 def download_data(url, save_path):
     """
