@@ -1,4 +1,5 @@
 from typing import Optional
+
 import pandas as pd
 
 
@@ -7,8 +8,9 @@ def limpar_e_salvar_dados_dengue(
 ) -> pd.DataFrame:
     """Carrega o CSV de dengue, extrai apenas as colunas essenciais para os gráficos
 
-    (casos/semana, comparativo anual e distribuição de alertas) e salva no
-    caminho de destino.
+    (casos/semana, comparativo anual, distribuição de alertas e cruzamento clima
+    x contágio)
+    e salva no caminho de destino.
     """
     df = pd.read_csv(caminho_origem)
 
@@ -19,10 +21,17 @@ def limpar_e_salvar_dados_dengue(
     # 2. Converter data de início da semana
     df["data_inicio_semana"] = pd.to_datetime(df["data_iniSE"])
 
-    # 3. Renomear colunas
-    df = df.rename(columns={"casos": "casos_notificados", "nivel": "nivel_alerta"})
+    # 3. Renomear colunas para termos legíveis e padronizados
+    mapa_colunas = {
+        "casos": "casos_notificados",
+        "nivel": "nivel_alerta",
+        "tempmed": "temperatura_media",
+        "umidmed": "umidade_media",
+        "Rt": "taxa_reproducao_rt",
+    }
+    df = df.rename(columns=mapa_colunas)
 
-    # 4. Traduzir nível de alerta
+    # 4. Traduzir nível de alerta do InfoDengue
     mapa_alerta = {
         1: "Verde (Baixo)",
         2: "Amarelo (Atenção)",
@@ -36,16 +45,19 @@ def limpar_e_salvar_dados_dengue(
         by=["ano", "semana_epidemiologica"], ascending=True
     ).reset_index(drop=True)
 
-    # 6. Filtrar as colunas estritamente necessárias
+    # 6. Filtrar as colunas estritamente necessárias para todos os gráficos
     colunas_finais = [
         "data_inicio_semana",
         "ano",
         "semana_epidemiologica",
         "casos_notificados",
+        "temperatura_media",
+        "umidade_media",
+        "taxa_reproducao_rt",
         "nivel_alerta",
         "nivel_alerta_desc",
     ]
-    df_filtrado = df[colunas_finais]
+    df_filtrado = df[[col for col in colunas_finais if col in df.columns]]
 
     # 7. Salvar diretamente no arquivo de saída, se informado
     if caminho_destino:
