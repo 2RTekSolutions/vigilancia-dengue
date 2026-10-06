@@ -1,10 +1,8 @@
-from typing import Optional
-
 import pandas as pd
 
 
 def limpar_e_salvar_dados_dengue(
-    caminho_origem: str, caminho_destino: Optional[str] = None
+    caminho_origem: str, caminho_destino: str | None = None
 ) -> pd.DataFrame:
     """Carrega o CSV de dengue, extrai apenas as colunas essenciais para os gráficos
 
