@@ -27,7 +27,6 @@ Entregar um sistema que:
 - prevê as semanas de maior risco com base em clima e histórico;
 - recebe denúncia de criadouro com foto e GPS e organiza a fila para o controle de vetores;
 - mostra no mapa onde há mais denúncia, para direcionar mutirão e campanha;
-- leva a escola junto, com uma gincana de caça ao criadouro e resultado no mapa.
 
 ### Fora de escopo
 
@@ -35,6 +34,7 @@ Entregar um sistema que:
 - Diagnóstico ou orientação médica. O sistema orienta procurar a UBS.
 - Substituir o sistema oficial de vigilância ou o boletim da Secretaria de Saúde.
 - Aplicação de inseticida ou qualquer ação de campo pelo grupo.
+- Ações presenciais de educação (escolas, gincanas, palestras). O projeto é só software.
 
 ## Fases
 
@@ -42,11 +42,11 @@ Uma fase por semestre. Cada fase fecha com a entrega de extensão do PPC (300 h 
 
 | Semestre | Entrega do PPC | O que o projeto entrega |
 | --- | --- | --- |
-| 1º (2026-2) | Protótipo de site (Eng. de Software I) | Site da campanha com a escola: criadouros comuns e gráfico de casos da cidade |
+| 1º (2026-2) | Protótipo de site (Eng. de Software I) | Site da campanha de prevenção: criadouros comuns e gráfico de casos da cidade |
 | 2º (2027-1) | Sistema web Python/PHP + SQL, UML | Coleta semanal do InfoDengue e do INMET, painel de casos |
 | 3º (2027-2) | App web com Scrum/Kanban e NoSQL | Denúncias com foto em NoSQL, fila do controle de vetores |
 | 4º (2028-1) | Aplicação web com foco em UX | Mapa por bairro testado com agentes e moradores |
-| 5º (2028-2) | App com banco e sensores, CI/CD | App de denúncia e gincana com câmera e GPS |
+| 5º (2028-2) | App com banco e sensores, CI/CD | App de denúncia com câmera e GPS |
 | 6º (2029-1) | Sistema web, mobile e desktop, V&V | Desktop da vigilância, previsão de risco validada |
 
 A denúncia precisa estar pronta antes das chuvas de fim de ano (Fase 3). Cada pico de verão vira dado de teste.
@@ -56,19 +56,18 @@ A denúncia precisa estar pronta antes das chuvas de fim de ano (Fase 3). Cada p
 | Marco | Data |
 | --- | --- |
 | Escolha do tema | 01/10/2026 (feito) |
-| Primeiro contato com a escola | 06/10/2026 |
+| Apresentação do projeto à coordenação do curso | 08/10/2026 |
 | Envio do banner para impressão | 24/10/2026 |
 | Feira de tecnologia da Fatec | 29/10/2026 |
 
 ## Organizações parceiras
 
-A parceira do 1º semestre é uma escola (educação ambiental). O controle de vetores e a Vigilância Epidemiológica entram como usuários a partir da Fase 3, com parceria formal.
+A parceira proposta é a Prefeitura de Olímpia, pela Secretaria Municipal de Saúde, a Vigilância Epidemiológica e o controle de vetores. A coordenação do curso faz a ponte com a Prefeitura, e a parceria ainda será formalizada.
 
 | Organização | Papel |
 | --- | --- |
-| Escola municipal ou estadual | Principal no 1º semestre; gincana com os alunos |
+| Secretaria Municipal de Saúde / Vigilância Epidemiológica | Parceira proposta; valida o painel e as faixas de alerta |
 | Controle de vetores / agentes de endemias | Usuário principal a partir da Fase 3 |
-| Vigilância Epidemiológica municipal | Valida o painel e as faixas de alerta (a confirmar) |
 | UBS e agentes comunitários de saúde | Divulgação e denúncias em visita |
 | Associações de bairro | Mutirão e divulgação |
 
@@ -111,7 +110,7 @@ O projeto usa só dado público e agregado nas fases 1 e 2. No fim da Fase 2, o 
 
 | Pasta | Conteúdo | Fase |
 | --- | --- | --- |
-| `site/` | Site da campanha com a escola | 1 |
+| `site/` | Site da campanha de prevenção | 1 |
 | `coleta/` | Coleta do InfoDengue e do INMET | 2 |
 | `api/` | API do sistema | 2 em diante |
 | `analise/` | Séries temporais e previsão de risco | 2 em diante |
