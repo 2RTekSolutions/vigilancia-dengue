@@ -24,6 +24,23 @@ build-backend = "uv_build"
 [dependency-groups]
 dev = [
     "pytest>=9.1.1",
+    "ruff>=0.16.10",
 ]
 [tool.pytest.ini_options]
 pythonpath = ["src"]
+[tool.ruff]
+line-length = 88
+target-version = "py312"
+
+[tool.ruff.lint]
+select = [
+    "E",   # pycodestyle (erros)
+    "W",   # pycodestyle (avisos)
+    "F",   # pyflakes
+    "I",   # isort (ordem dos imports)
+    "UP",  # pyupgrade (sintaxe moderna)
+    "B",   # flake8-bugbear (bugs comuns)
+]
+
+[tool.ruff.format]
+quote-style = "double"
