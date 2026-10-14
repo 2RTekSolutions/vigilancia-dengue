@@ -1,4 +1,5 @@
 import pandas as pd
+import pandera.pandas as pa
 
 
 def transformar(df_bruto: pd.DataFrame, geocode: int) -> pd.DataFrame:
@@ -64,3 +65,68 @@ def transformar(df_bruto: pd.DataFrame, geocode: int) -> pd.DataFrame:
     ]
 
     return df[colunas_finais]
+
+
+def validar(df: pd.DataFrame) -> pd.DataFrame:
+    """Valida o DataFrame transformado usando Pandera.
+
+    Args:
+        df (pd.DataFrame): DataFrame transformado.
+
+    Raises:
+        ValueError: Se o DataFrame não atender ao esquema definido.
+
+    Returns:
+        pd.DataFrame: DataFrame validado.
+    """
+    esquema = pa.DataFrameSchema(
+        {
+            "data_inicio_semana": pa.Column(
+                pd.Timestamp,
+                checks=pa.Check(lambda x: x.dt.dayofweek == 6),
+                nullable=False,
+            ),
+            "ano": pa.Column(int, checks=pa.Check.ge(2010), nullable=False),
+            "semana_epidemiologica": pa.Column(
+                int, checks=pa.Check.in_range(1, 53), nullable=False
+            ),
+            "casos_notificados": pa.Column(int, checks=pa.Check.ge(0), nullable=False),
+            "temperatura_media": pa.Column(
+                float, checks=pa.Check.in_range(-50, 80), nullable=True
+            ),
+            "umidade_media": pa.Column(
+                float, checks=pa.Check.in_range(0, 100), nullable=True
+            ),
+            "taxa_reproducao_rt": pa.Column(
+                float, checks=pa.Check.ge(0), nullable=True
+            ),
+            "nivel_alerta": pa.Column(
+                int, checks=pa.Check.in_range(1, 4), nullable=False
+            ),
+            "nivel_alerta_desc": pa.Column(
+                str,
+                checks=pa.Check.isin(
+                    [
+                        "Verde (Baixo)",
+                        "Amarelo (Atenção)",
+                        "Laranja (Alerta)",
+                        "Vermelho (Crítico)",
+                    ]
+                ),
+                nullable=False,
+            ),
+            "geocode": pa.Column(
+                int,
+                checks=pa.Check.in_range(1000000, 9999999),
+                nullable=False,
+            ),
+            "populacao": pa.Column(int, checks=pa.Check.gt(0), nullable=False),
+        },
+        unique=["semana_epidemiologica", "geocode", "ano"],
+    )
+    try:
+        return esquema.validate(df, lazy=True)
+    except pa.errors.SchemaErrors as e:
+        raise ValueError(
+            f"Validação do DataFrame falhou: {e.failure_cases.to_string()}"
+        ) from e

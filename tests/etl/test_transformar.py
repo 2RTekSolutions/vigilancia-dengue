@@ -1,7 +1,21 @@
 import pandas as pd
 import pytest
 
-from etl.transformar import transformar
+from etl.transformar import transformar, validar
+
+DADOS_VALIDOS = {
+    "data_inicio_semana": pd.to_datetime(["2024-01-07", "2024-01-14"]),
+    "ano": [2024, 2024],
+    "semana_epidemiologica": [2, 3],
+    "casos_notificados": [10, 20],
+    "temperatura_media": [25.0, 26.0],
+    "umidade_media": [70.0, 80.0],
+    "taxa_reproducao_rt": [1.1, 1.2],
+    "nivel_alerta": [1, 2],
+    "nivel_alerta_desc": ["Verde (Baixo)", "Amarelo (Atenção)"],
+    "geocode": [3533908, 3533908],
+    "populacao": [55000, 55000],
+}
 
 
 def test_colunas_ausente_gera_erro():
@@ -91,3 +105,31 @@ def test_transformar_converte_datas():
         pd.Timestamp("2023-12-31"),
         pd.Timestamp("2024-01-07"),
     ]
+
+
+def test_validar_exige_inicio_da_semana_no_domingo():
+    df = pd.DataFrame(DADOS_VALIDOS)
+    df["data_inicio_semana"] = pd.to_datetime(["2024-01-07", "2024-01-08"])
+
+    with pytest.raises(ValueError, match="data_inicio_semana"):
+        validar(df)
+
+
+def test_validar_aceita_dados_validos():
+    df = pd.DataFrame(DADOS_VALIDOS)
+    resultado = validar(df)
+    pd.testing.assert_frame_equal(resultado, df)
+
+
+def test_validar_nao_aceita_SE_54():
+    df = pd.DataFrame(DADOS_VALIDOS)
+    df.loc[0, "semana_epidemiologica"] = 54
+    with pytest.raises(ValueError, match="semana_epidemiologica"):
+        validar(df)
+
+
+def test_validar_nao_aceita_duplicatas():
+    df = pd.DataFrame(DADOS_VALIDOS)
+    df = pd.concat([df, df.iloc[[0]]], ignore_index=True)
+    with pytest.raises(ValueError, match="multiple_fields_uniqueness"):
+        validar(df)
