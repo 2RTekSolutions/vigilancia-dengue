@@ -1,7 +1,7 @@
 import pandas as pd
 import pytest
 
-from etl.transformar import transformar, validar
+from etl.transformar import transformar, validar, completar_populacao
 
 DADOS_VALIDOS = {
     "data_inicio_semana": pd.to_datetime(["2024-01-07", "2024-01-14"]),

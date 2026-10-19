@@ -130,3 +130,40 @@ def validar(df: pd.DataFrame) -> pd.DataFrame:
         raise ValueError(
             f"Validação do DataFrame falhou: {e.failure_cases.to_string()}"
         ) from e
+
+
+def completar_populacao(df_pop: pd.DataFrame, anos: list[int]) -> pd.DataFrame:
+    """Completa os dados de população para os anos faltantes por interpolação.
+
+    Args:
+        df_pop (pd.DataFrame): DataFrame contendo geocode, ano, população e fonte.
+        anos (list[int]): Lista de anos a serem completados.
+
+    Returns:
+        pd.DataFrame: DataFrame com uma linha por ano pedido, populacao inteira
+          e arredondada, e fonte = interpolado nos anos preenchidos.
+
+    Raises:
+        ValueError: Se algum ano pedido estiver fora do intervalo de anos disponíveis no
+          DataFrame.
+    """
+    if min(anos) < df_pop["ano"].min():
+        raise ValueError(
+            f"Não é possível interpolar {min(anos)}: "
+            f"Fora do limite -> {df_pop['ano'].min()}"
+        )
+    if max(anos) > df_pop["ano"].max():
+        raise ValueError(
+            f"Não é possível interpolar {max(anos)}: "
+            f"Fora do limite -> {df_pop['ano'].max()}"
+        )
+    indice = sorted(set(df_pop["ano"]) | set(anos))
+    resultado = df_pop.set_index("ano").reindex(indice)
+
+    resultado["populacao"] = (
+        resultado["populacao"].interpolate(method="index").round().astype(int)
+    )
+    resultado["geocode"] = df_pop["geocode"].iloc[0]
+    resultado["fonte"] = resultado["fonte"].fillna("interpolado")
+
+    return resultado.loc[sorted(anos)].reset_index()
