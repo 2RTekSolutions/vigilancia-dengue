@@ -1,6 +1,6 @@
 # Requisitos
 
-Lista inicial, a validar com a organização parceira. A coluna Fase diz em que semestre o requisito entra.
+Lista inicial, a validar com os usuários (moradores e agentes de endemias). A coluna Fase diz em que semestre o requisito entra.
 
 ## Funcionais
 

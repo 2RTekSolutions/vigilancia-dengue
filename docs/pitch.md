@@ -1,0 +1,3 @@
+# Pitch de 1 minuto
+
+Todo verão a dengue volta, e a maior parte dos criadouros está dentro das casas, onde só o morador vê. O dado de casos chega por semana e com atraso: quando o pico aparece na planilha, já passou da hora de agir. A nossa proposta é um sistema aberto que usa dado público e clima para mostrar as semanas de maior risco, e deixa o morador fotografar criadouros para os agentes irem direto onde precisa. Neste semestre estamos fazendo o site da campanha de prevenção, com o gráfico de casos da cidade. Até 2029, a ideia é ter painel, app e mapa por bairro, sem usar nenhum dado de paciente.
