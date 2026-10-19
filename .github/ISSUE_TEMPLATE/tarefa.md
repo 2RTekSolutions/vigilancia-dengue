@@ -12,4 +12,4 @@ labels: ''
 
 ## Fase e área
 
-Marque os rótulos `fase-N` e a área (`site`, `api`, `app`, `dados`, `docs`, `banner`).
+Marque os rótulos `fase-N` e a área (`site`, `api`, `app`, `dados`, `docs`).

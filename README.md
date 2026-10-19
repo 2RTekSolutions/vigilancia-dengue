@@ -57,19 +57,17 @@ A denúncia precisa estar pronta antes das chuvas de fim de ano (Fase 3). Cada p
 | --- | --- |
 | Escolha do tema | 01/10/2026 (feito) |
 | Apresentação do projeto à coordenação do curso | 08/10/2026 |
-| Envio do banner para impressão | 24/10/2026 |
-| Feira de tecnologia da Fatec | 29/10/2026 |
 
-## Organizações parceiras
+## Público-alvo
 
-A parceira proposta é a Prefeitura de Olímpia, pela Secretaria Municipal de Saúde, a Vigilância Epidemiológica e o controle de vetores. A coordenação do curso faz a ponte com a Prefeitura, e a parceria ainda será formalizada.
+O projeto não tem organização parceira: a ideia é que vire um produto real, e o professor liberou a extensão sem parceira.
 
-| Organização | Papel |
+| Quem | Como usa |
 | --- | --- |
-| Secretaria Municipal de Saúde / Vigilância Epidemiológica | Parceira proposta; valida o painel e as faixas de alerta |
-| Controle de vetores / agentes de endemias | Usuário principal a partir da Fase 3 |
-| UBS e agentes comunitários de saúde | Divulgação e denúncias em visita |
-| Associações de bairro | Mutirão e divulgação |
+| Moradores | Consultam o risco da semana e denunciam criadouros |
+| Controle de vetores / agentes de endemias | Usuário principal a partir da Fase 3: fila de denúncias e mapa |
+| Vigilância Epidemiológica | Painel de casos e faixas de alerta |
+| UBS, agentes comunitários e associações de bairro | Divulgação, denúncias em visita e mutirões |
 
 ## Dados
 
@@ -116,9 +114,9 @@ O projeto usa só dado público e agregado nas fases 1 e 2. No fim da Fase 2, o 
 | `analise/` | Séries temporais e previsão de risco | 2 em diante |
 | `painel/` | Painel web | 2 em diante |
 | `app/` | Aplicativo de denúncia | 5 |
-| `docs/` | Atas, requisitos, banner e relatórios de extensão | todas |
+| `docs/` | Requisitos, pitch e relatórios de extensão | todas |
 
-Requisitos: [docs/requisitos.md](docs/requisitos.md). Banner da feira: [docs/banner.md](docs/banner.md).
+Requisitos: [docs/requisitos.md](docs/requisitos.md). Pitch de 1 minuto: [docs/pitch.md](docs/pitch.md).
 
 ## Banco de dados
 
