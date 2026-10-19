@@ -1,7 +1,7 @@
 import pandas as pd
 import pytest
 
-from etl.transformar import transformar, validar, completar_populacao
+from etl.transformar import completar_populacao, transformar, validar
 
 DADOS_VALIDOS = {
     "data_inicio_semana": pd.to_datetime(["2024-01-07", "2024-01-14"]),
@@ -15,6 +15,13 @@ DADOS_VALIDOS = {
     "nivel_alerta_desc": ["Verde (Baixo)", "Amarelo (Atenção)"],
     "geocode": [3533908, 3533908],
     "populacao": [55000, 55000],
+}
+
+BASE_POP = {
+    "ano": [2020, 2022],
+    "populacao": [100, 200],
+    "geocode": [3533908, 3533908],
+    "fonte": ["estimativa", "estimativa"],
 }
 
 
@@ -133,3 +140,40 @@ def test_validar_nao_aceita_duplicatas():
     df = pd.concat([df, df.iloc[[0]]], ignore_index=True)
     with pytest.raises(ValueError, match="multiple_fields_uniqueness"):
         validar(df)
+
+
+def test_completar_populacao_retorna_erro_ano_fora_intervalo_valido():
+    df_pop = pd.DataFrame(BASE_POP)
+    with pytest.raises(ValueError, match="2019"):
+        completar_populacao(df_pop, [2019, 2025])
+    with pytest.raises(ValueError, match="2025"):
+        completar_populacao(df_pop, [2022, 2025])
+
+
+def test_completar_populacao_interpolacao_calcula_corretamente():
+    df_pop = pd.DataFrame(BASE_POP)
+    anos = [2021]
+    populacao_interpolada = completar_populacao(df_pop, anos)
+    assert populacao_interpolada["populacao"].tolist() == [150]
+    assert populacao_interpolada["ano"].tolist() == [2021]
+    assert populacao_interpolada["fonte"].tolist() == ["interpolado"]
+
+
+def test_completar_populacao_interpolacao_mantem_anos_existentes():
+    df_pop = pd.DataFrame(BASE_POP)
+    anos = [2020, 2021, 2022]
+    populacao_completa = completar_populacao(df_pop, anos)
+    assert populacao_completa["populacao"].tolist() == [100, 150, 200]
+    assert populacao_completa["ano"].tolist() == [2020, 2021, 2022]
+    assert populacao_completa["fonte"].tolist() == [
+        "estimativa",
+        "interpolado",
+        "estimativa",
+    ]
+
+
+def test_completar_populacao_interpolacao_nao_altera_df_pop():
+    df_pop = pd.DataFrame(BASE_POP)
+    anos = [2021]
+    _ = completar_populacao(df_pop, anos)
+    pd.testing.assert_frame_equal(df_pop, pd.DataFrame(BASE_POP))
