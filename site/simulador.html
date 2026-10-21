@@ -80,6 +80,33 @@
         </details>
       </article>
     </section>
+
+    <section aria-labelledby="titulo-vem">
+      <h2 id="titulo-vem">O que vem aí</h2>
+      <div class="grade-2">
+        <article class="painel">
+          <div class="painel-topo">
+            <h3>Previsão das próximas 4 semanas</h3>
+            <span class="selo">simulado</span>
+          </div>
+          <div class="grafico" id="previsao-grafico"><canvas id="grafico-previsao" role="img"></canvas></div>
+          <ul class="previsao-lista" id="previsao-lista"></ul>
+          <p class="nota" id="previsao-nota"></p>
+        </article>
+        <article class="painel">
+          <div class="painel-topo">
+            <h3>Temperatura de N semanas atrás × casos</h3>
+            <span class="selo selo-real">dado real</span>
+          </div>
+          <label class="defasagem">
+            Defasagem: <input type="range" id="defasagem" min="0" max="10" value="4">
+            <output id="defasagem-rotulo" for="defasagem">4 semanas</output>
+          </label>
+          <div class="grafico"><canvas id="grafico-clima" role="img"></canvas></div>
+          <p class="nota" id="clima-nota"></p>
+        </article>
+      </div>
+    </section>
   </main>
 
   <footer class="rodape">
