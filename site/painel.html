@@ -32,6 +32,8 @@
         <!--
             O painel é um app Streamlit (pasta painel/ do repositório), publicado no Streamlit Community Cloud.
             Se o endereço mudar, troque nos dois lugares abaixo (o iframe e o link).
+            O iframe usa o caminho direto do app (/~/+/): pelo endereço normal, a moldura do
+            Streamlit Cloud deixa o painel com uns 100 px de altura.
         -->
         <p class="nota">
             Se o painel demorar para aparecer, ele está "acordando" (leva uns 30 segundos depois de um tempo sem uso).
@@ -40,7 +42,7 @@
     </main>
 
     <div class="painel-largo">
-        <iframe class="painel-embed" src="https://farol-dengue.streamlit.app/?embed=true"
+        <iframe class="painel-embed" src="https://farol-dengue.streamlit.app/~/+/?embed=true"
                 title="Painel interativo da dengue em Olímpia/SP" loading="lazy"></iframe>
     </div>
 

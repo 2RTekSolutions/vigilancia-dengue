@@ -9,11 +9,13 @@ header[data-testid="stHeader"] { display: none; }
 .barra img.logo { height: 76px; }
 .barra .titulo h1 { font-size: 1.8rem; margin: 0; padding: 0; color: #FFFFFF; }
 .barra .titulo p { margin: 0; color: #B8C7DD; }
+.barra .titulo p b { color: #38E4AE; font-size: 1.15em; }
 .barra .direita {
     margin-left: auto; text-align: right; color: #B8C7DD;
     display: flex; align-items: center; gap: 16px;
 }
 .barra .direita b { color: #38E4AE; }
+.barra .direita .nomes { color: #FFFFFF; font-weight: 600; }
 .barra img.empresa { height: 44px; }
 
 .cartao {
