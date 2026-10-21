@@ -160,7 +160,7 @@ async function trocarMunicipio(geocode) {
   estado.municipio = await carregarJSON(`${PASTA}/${geocode}.json`);
   const { nome, uf, semanas, fonte } = estado.municipio;
   $("titulo-municipio").textContent = `· ${nome}/${uf}`;
-  document.title = `Simulador · Vigilância da Dengue · ${nome}/${uf}`;
+  document.title = `FAROL · ${nome}/${uf}`;
   $("semana").max = semanas.length - 1;
   $("rodape-fonte").textContent = fonte;
   $("rodape-data").textContent = formatarData(semanas.at(-1).data);

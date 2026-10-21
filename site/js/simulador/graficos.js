@@ -76,8 +76,8 @@ export function desenharPrevisao(canvas, reais, previsao) {
         {
           label: "Casos notificados",
           data: [...reais.map((s) => s.casos), ...vazios(projetadas.length)],
-          borderColor: "#2f6db5",
-          backgroundColor: "#2f6db5",
+          borderColor: "#1d63b8",
+          backgroundColor: "#1d63b8",
           borderWidth: 2,
           pointRadius: 0,
           pointHoverRadius: 5,
@@ -139,7 +139,7 @@ export function desenharClima(canvas, pares, defasagem) {
       datasets: [
         {
           data: pares,
-          backgroundColor: "rgb(47 109 181 / 0.75)",
+          backgroundColor: "rgb(29 99 184 / 0.75)",
           borderColor: "#ffffff",
           borderWidth: 1,
           pointRadius: 4,

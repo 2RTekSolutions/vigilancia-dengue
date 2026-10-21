@@ -2,7 +2,7 @@
 import { contarAbertasPorSetor } from "./denuncias.js";
 
 const L = globalThis.L;
-const COR_SITUACAO = { nova: "#a8212b", agendada: "#2f6db5", vistoriada: "#9ca3af" };
+const COR_SITUACAO = { nova: "#a8212b", agendada: "#1d63b8", vistoriada: "#9ca3af" };
 
 let mapa;
 let camadaContorno;
@@ -21,7 +21,7 @@ export function iniciarMapa(idElemento) {
 export function mostrarMunicipio(contorno, [sul, oeste, norte, leste]) {
   camadaContorno?.remove();
   camadaContorno = L.geoJSON(contorno, {
-    style: { color: "#b20f17", weight: 2, fill: false },
+    style: { color: "#0a2246", weight: 2, fill: false },
     interactive: false,
   }).addTo(mapa);
   mapa.fitBounds([[sul, oeste], [norte, leste]], { padding: [8, 8] });
