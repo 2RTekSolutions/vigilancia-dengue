@@ -1,10 +1,14 @@
-# Vigilância Participativa da Dengue
+# FAROL · Vigilância da Dengue
+
+**F**erramenta de **A**ntecipação de **R**isco e **O**rientação **L**ocal.
 
 Projeto de extensão do curso de Desenvolvimento de Software Multiplataforma (DSM) da Fatec Olímpia, do 1º semestre (2026-2) até a formatura (2029-1).
 
-Um sistema aberto que prevê as semanas de maior risco de dengue em Olímpia, organiza as denúncias de criadouro feitas pela população e ajuda o controle de vetores a decidir onde ir primeiro. A dengue precisa ser combatida antes do pico, não depois.
+Um sistema aberto para a vigilância epidemiológica de qualquer município: mostra como está a dengue na semana, prevê as semanas de maior risco e organiza as denúncias de criadouro para o controle de vetores decidir onde ir primeiro. A dengue precisa ser combatida antes do pico, não depois.
 
 **Site:** https://2rteksolutions.github.io/vigilancia-dengue/ · **Simulador:** https://2rteksolutions.github.io/vigilancia-dengue/simulador.html
+
+O simulador mostra como vai ser o sistema pronto, com Olímpia/SP, Itanhaém/SP e Viçosa/MG. Casos e clima são reais (InfoDengue); previsão, denúncias e mapa são simulados.
 
 ## Grupo
 
@@ -15,20 +19,19 @@ Um sistema aberto que prevê as semanas de maior risco de dengue em Olímpia, or
 
 ## Problema
 
-- A dengue volta todo ano no interior de SP, com picos no verão chuvoso. Em anos de epidemia, a rede de saúde lota.
-- A maior parte dos criadouros fica dentro das casas e dos quintais, onde só o morador vê.
+- A dengue volta todo ano, com o pico entre fevereiro e maio. Em anos de epidemia, a rede de saúde lota.
+- O tamanho da epidemia muda muito de um ano para outro: em Olímpia foram 366 casos em 2018 e 9.369 em 2024. Repetir o plano do ano passado não funciona.
 - O dado de casos chega com atraso e por semana epidemiológica. Quando o pico aparece na planilha, já passou da hora de agir.
-- A denúncia de terreno com lixo ou piscina abandonada chega por telefone, sem foto nem endereço exato, e se perde.
-- A campanha de conscientização costuma ser igual para a cidade toda, sem olhar onde o risco é maior.
+- A denúncia de terreno com lixo ou piscina abandonada chega por telefone, sem foto nem endereço exato, e a equipe de campo não tem como decidir onde ir primeiro.
+- O problema é o mesmo em cidades diferentes, e as cidades pequenas não têm ferramenta própria.
 
 ## Objetivo
 
-Entregar um sistema que:
+Entregar um sistema que, para qualquer município com dado público:
 
-- mostra casos e incidência por semana, com dado público agregado;
-- prevê as semanas de maior risco com base em clima e histórico;
-- recebe denúncia de criadouro com foto e GPS e organiza a fila para o controle de vetores;
-- mostra no mapa onde há mais denúncia, para direcionar mutirão e campanha;
+- mostra casos, nível de alerta e Rt por semana (**como estamos**);
+- prevê as semanas de maior risco com base no histórico, no Rt e no clima (**o que vem aí**);
+- recebe denúncia de criadouro com foto e GPS e organiza a fila e o mapa para o controle de vetores (**onde agir primeiro**).
 
 ### Fora de escopo
 
@@ -44,7 +47,7 @@ Uma fase por semestre. Cada fase fecha com a entrega de extensão do PPC (300 h 
 
 | Semestre | Entrega do PPC | O que o projeto entrega |
 | --- | --- | --- |
-| 1º (2026-2) | Protótipo de site (Eng. de Software I) | Site da campanha de prevenção: criadouros comuns e gráfico de casos da cidade |
+| 1º (2026-2) | Protótipo de site (Eng. de Software I) | Site do FAROL (por que este projeto, com os dados) e simulador do sistema da vigilância |
 | 2º (2027-1) | Sistema web Python/PHP + SQL, UML | Coleta semanal do InfoDengue e do INMET, painel de casos |
 | 3º (2027-2) | App web com Scrum/Kanban e NoSQL | Denúncias com foto em NoSQL, fila do controle de vetores |
 | 4º (2028-1) | Aplicação web com foco em UX | Mapa por bairro testado com agentes e moradores |
@@ -58,29 +61,31 @@ A denúncia precisa estar pronta antes das chuvas de fim de ano (Fase 3). Cada p
 | Marco | Data |
 | --- | --- |
 | Escolha do tema | 01/10/2026 (feito) |
-| Apresentação do projeto à coordenação do curso | 08/10/2026 |
+| Apresentação do projeto à coordenação do curso | 08/10/2026 (feito) |
+| Site e simulador publicados no GitHub Pages | 21/10/2026 (feito) |
+| Feira de tecnologia da Fatec (pitch de 1 minuto) | 29/10/2026 |
 
 ## Público-alvo
 
-O projeto não tem organização parceira: a ideia é que vire um produto real, e o professor liberou a extensão sem parceira.
+O projeto não tem organização parceira: a ideia é que vire um produto real, e o professor liberou a extensão sem parceira. Nesta primeira etapa, o foco é quem trabalha na vigilância. O morador entra a partir da Fase 3, com a denúncia.
 
 | Quem | Como usa |
 | --- | --- |
-| Moradores | Consultam o risco da semana e denunciam criadouros |
-| Controle de vetores / agentes de endemias | Usuário principal a partir da Fase 3: fila de denúncias e mapa |
-| Vigilância Epidemiológica | Painel de casos e faixas de alerta |
+| Vigilância Epidemiológica | Painel de casos, nível de alerta e previsão de risco |
+| Controle de vetores / agentes de endemias | Fila de denúncias e mapa por setor |
+| Moradores (a partir da Fase 3) | Denunciam criadouros e consultam o risco da semana |
 | UBS, agentes comunitários e associações de bairro | Divulgação, denúncias em visita e mutirões |
 
 ## Dados
 
-O projeto usa só dado público e agregado nas fases 1 e 2. No fim da Fase 2, o grupo decide se pede dado por bairro à Secretaria de Saúde, por canal formal.
+O projeto usa só dado público e agregado nas fases 1 e 2, e funciona para qualquer município pelo código do IBGE. No fim da Fase 2, o grupo decide se pede dado por bairro à Secretaria de Saúde, por canal formal.
 
 | O que mede | Fonte | Granularidade |
 | --- | --- | --- |
 | Casos estimados, incidência e nível de alerta | [InfoDengue](https://info.dengue.mat.br/) (Fiocruz e FGV) | Semanal, por município |
 | Casos notificados e confirmados | SINAN via DATASUS/TabNet | Semanal ou mensal, por município |
 | Temperatura, umidade e chuva | INMET, estação automática mais próxima | Horária |
-| População e bairros | IBGE (Censo e malhas) | Cadastro |
+| População e contorno do município | IBGE (estimativas, Censo e malhas) | Anual / cadastro |
 | Denúncias de criadouro | O próprio sistema | Por caso |
 
 ### Privacidade (LGPD)
@@ -95,7 +100,8 @@ O projeto usa só dado público e agregado nas fases 1 e 2. No fim da Fase 2, o 
 
 | Camada | Tecnologia |
 | --- | --- |
-| Site (1º sem.) | HTML, CSS e JavaScript |
+| Site (1º sem.) | HTML, CSS e JavaScript (nível Dev Web I) |
+| Simulador (1º sem.) | JavaScript com módulos, Chart.js e Leaflet |
 | Coleta | Python com agendamento semanal |
 | API | Python com FastAPI |
 | Banco relacional | PostgreSQL |
@@ -108,17 +114,31 @@ O projeto usa só dado público e agregado nas fases 1 e 2. No fim da Fase 2, o 
 
 ## Estrutura do repositório
 
-| Pasta | Conteúdo | Fase |
-| --- | --- | --- |
-| `site/` | Site da campanha de prevenção | 1 |
-| `coleta/` | Coleta do InfoDengue e do INMET | 2 |
-| `api/` | API do sistema | 2 em diante |
-| `analise/` | Séries temporais e previsão de risco | 2 em diante |
-| `painel/` | Painel web | 2 em diante |
-| `app/` | Aplicativo de denúncia | 5 |
-| `docs/` | Requisitos, pitch e relatórios de extensão | todas |
+| Pasta | Conteúdo |
+| --- | --- |
+| `site/` | Site do FAROL (`index`, `dados`, `proposta`, `sobre`) e o simulador (`simulador.html`, `js/simulador/`, `dados/simulador/`) |
+| `src/etl/` | ETL: extração do InfoDengue e do IBGE, transformação e validação, exportação dos dados do simulador |
+| `tests/` | Testes do ETL (pytest) e das contas do simulador (Node) |
+| `notebooks/` | Análises exploratórias |
+| `data/` | Dados brutos e processados |
+| `docs/` | Requisitos, pitch, wireframes e mockups, design e plano do simulador |
+| `.github/workflows/` | Publicação do site no GitHub Pages |
 
-Requisitos: [docs/requisitos.md](docs/requisitos.md). Pitch de 1 minuto: [docs/pitch.md](docs/pitch.md).
+Pastas previstas para as próximas fases: API, coleta agendada, painel e app.
+
+Requisitos: [docs/requisitos.md](docs/requisitos.md). Pitch de 1 minuto: [docs/pitch.md](docs/pitch.md). Design do simulador: [docs/superpowers/specs/2026-10-21-simulador-design.md](docs/superpowers/specs/2026-10-21-simulador-design.md). Wireframes e mockups do site e do simulador: [docs/design/farol-wireframes.pdf](docs/design/farol-wireframes.pdf) e [docs/design/farol-mockups.pdf](docs/design/farol-mockups.pdf).
+
+## Como rodar
+
+```bash
+uv sync                                          # dependências do Python
+python -m http.server -d site                    # site e simulador em localhost:8000
+PYTHONPATH=src uv run python -m etl.exportar_simulador   # atualiza os dados do simulador
+uv run pytest                                    # testes do ETL
+node --test tests/js/                            # testes do simulador
+```
+
+O site precisa de um servidor (o comando acima): aberto direto pelo arquivo, o navegador bloqueia a leitura dos dados. Cada merge na `develop` que mexe em `site/` publica o site de novo no GitHub Pages.
 
 ## Banco de dados
 

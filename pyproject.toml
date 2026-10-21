@@ -1,7 +1,7 @@
 [project]
 name = "vigilancia-dengue"
 version = "0.1.0"
-description = "Add your description here"
+description = "FAROL: vigilância da dengue com dado público, para qualquer município"
 readme = "README.md"
 authors = [
     { name = "Renan Croffi", email = "renancroffi@gmail.com" }
