@@ -49,7 +49,7 @@ Os três têm 458 semanas no InfoDengue (2018 a 2026), conferido em 21/10/2026.
 
 ## Dados
 
-`scripts/exportar_simulador.py` gera um JSON por município em `site/dados/simulador/<geocode>.json`, e um `municipios.json` com a lista.
+`src/etl/exportar_simulador.py` (rodar com `PYTHONPATH=src uv run python -m etl.exportar_simulador`) gera um JSON por município em `site/dados/simulador/<geocode>.json`, e um `municipios.json` com a lista.
 
 Para cada município:
 1. `extrair(geocode, 2018, ano_atual, "dengue")` → `transformar()` → `validar()` (ETL existente).
@@ -117,9 +117,9 @@ site/js/simulador/
   mapa.js        Leaflet
   main.js        estado (município, semana) e ligação dos painéis
 site/dados/simulador/*.json
-scripts/exportar_simulador.py
+src/etl/exportar_simulador.py
 tests/js/*.test.mjs
-tests/scripts/test_exportar_simulador.py
+tests/etl/test_exportar_simulador.py
 ```
 
 `previsao.js` e `denuncias.js` são puros (sem DOM), testáveis no Node.
