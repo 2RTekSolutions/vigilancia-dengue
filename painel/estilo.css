@@ -1,0 +1,27 @@
+/* Visual do painel (paleta do FAROL: #0A2246, #102D57, #38E4AE, #B8C7DD) */
+.block-container { padding-top: 1rem; padding-bottom: 1rem; max-width: 1800px; }
+header[data-testid="stHeader"] { display: none; }
+
+.barra {
+    display: flex; align-items: center; gap: 20px; flex-wrap: wrap;
+    border-bottom: 4px solid #38E4AE; padding-bottom: 10px; margin-bottom: 16px;
+}
+.barra img.logo { height: 76px; }
+.barra .titulo h1 { font-size: 1.8rem; margin: 0; padding: 0; color: #FFFFFF; }
+.barra .titulo p { margin: 0; color: #B8C7DD; }
+.barra .direita {
+    margin-left: auto; text-align: right; color: #B8C7DD;
+    display: flex; align-items: center; gap: 16px;
+}
+.barra .direita b { color: #38E4AE; }
+.barra img.empresa { height: 44px; }
+
+.cartao {
+    background: #102D57; border: 1px solid #1F3B66; border-radius: 10px;
+    padding: 14px 18px; text-align: center;
+}
+.cartao .rotulo { color: #B8C7DD; font-weight: 600; }
+.cartao .valor { color: #38E4AE; font-size: 2.6rem; font-weight: 700; line-height: 1.2; }
+
+.stPlotlyChart { border: 1px solid #1F3B66; border-radius: 10px; overflow: hidden; }
+.rodape { color: #B8C7DD; font-size: 0.85rem; margin-top: 8px; }

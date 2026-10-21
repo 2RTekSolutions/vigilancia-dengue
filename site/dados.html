@@ -14,6 +14,7 @@
                 <ul class="menu">
                     <li><a href="index.html">Início</a></li>
                     <li><a class="ativo" href="dados.html">Os números</a></li>
+                    <li><a href="painel.html">Painel</a></li>
                     <li><a href="proposta.html">O FAROL</a></li>
                     <li><a href="sobre.html">Sobre</a></li>
                     <li><a class="destaque" href="simulador.html">Simulador</a></li>
@@ -30,16 +31,11 @@
 
         <section>
             <h2>O resumo</h2>
-            <!--
-                Visual 5 do Power BI (Kell).
-                Para colocar: exporte o visual como imagem PNG, salve em site/img/powerbi/visual-5-cartoes.png
-                e troque o <div class="espaco-grafico"> abaixo por:
-                <img src="img/powerbi/visual-5-cartoes.png" alt="Cartões com o total de casos, a média do Rt e o número de semanas em nível crítico">
-            -->
             <figure class="grafico">
-                <div class="espaco-grafico">Visual 5 do Power BI: total de casos, média do Rt e semanas em nível crítico</div>
+                <img src="img/painel/visual-5-cartoes.png" alt="Total de casos, semanas com Rt acima de 1 e semanas em alerta vermelho, de 2018 a 2026">
                 <figcaption>Os números gerais do período, antes dos detalhes.</figcaption>
             </figure>
+            <p>Quer filtrar por período e ver o valor de cada semana? <a class="botao" href="painel.html">Abra o painel interativo</a></p>
         </section>
 
         <section>
@@ -48,15 +44,9 @@
                 Todo ano o número de casos sobe a partir de fevereiro e chega ao pico entre março e maio,
                 na época mais quente e chuvosa. Fora dessa época, os casos quase somem.
             </p>
-            <!--
-                Visual 1 do Power BI (Kell).
-                Para colocar: exporte o visual como imagem PNG, salve em site/img/powerbi/visual-1-casos-temperatura.png
-                e troque o <div class="espaco-grafico"> abaixo por:
-                <img src="img/powerbi/visual-1-casos-temperatura.png" alt="Casos de dengue por semana em colunas e a temperatura média em linha">
-            -->
             <figure class="grafico">
-                <div class="espaco-grafico">Visual 1 do Power BI: casos por semana (colunas) e temperatura média (linha)</div>
-                <figcaption>Os picos de casos aparecem sempre na mesma época do ano, depois das semanas mais quentes.</figcaption>
+                <img src="img/painel/visual-1-casos-temperatura.png" alt="Casos de dengue por semana em colunas e a temperatura média em linha, de 2018 a 2026">
+                <figcaption>Os picos de casos aparecem sempre na mesma época do ano, na fase mais quente.</figcaption>
             </figure>
         </section>
 
@@ -68,15 +58,9 @@
                 Em Olímpia, em 2024, ele ficou acima de 1 desde a primeira semana do ano, e o pico veio
                 só na semana 18.
             </p>
-            <!--
-                Visual 4 do Power BI (Kell).
-                Para colocar: exporte o visual como imagem PNG, salve em site/img/powerbi/visual-4-rt-ano-semana.png
-                e troque o <div class="espaco-grafico"> abaixo por:
-                <img src="img/powerbi/visual-4-rt-ano-semana.png" alt="Mapa de calor do Rt por ano e semana epidemiológica, com as semanas de Rt acima de 1 destacadas">
-            -->
             <figure class="grafico">
-                <div class="espaco-grafico">Visual 4 do Power BI: Rt por ano e semana epidemiológica</div>
-                <figcaption>Cada linha é um ano e cada coluna, uma semana. As semanas com Rt acima de 1 aparecem destacadas.</figcaption>
+                <img src="img/painel/visual-4-rt-ano-semana.png" alt="Mapa de calor do Rt por ano e semana epidemiológica em três faixas: até 1, de 1 a 1,2 e acima de 1,2">
+                <figcaption>Cada linha é um ano e cada coluna, uma semana. Azul: Rt até 1 (estável ou caindo). Amarelo: de 1 a 1,2 (crescendo devagar). Laranja: acima de 1,2 (crescendo rápido).</figcaption>
             </figure>
             <p>
                 O sinal chega cedo, mas sozinho ele não diz o tamanho da epidemia: o Rt também passa de 1
@@ -108,14 +92,8 @@
                 <ul class="lista" id="comparacoes"></ul>
             </div>
 
-            <!--
-                Visual 3 do Power BI (Kell).
-                Para colocar: exporte o visual como imagem PNG, salve em site/img/powerbi/visual-3-niveis-alerta.png
-                e troque o <div class="espaco-grafico"> abaixo por:
-                <img src="img/powerbi/visual-3-niveis-alerta.png" alt="Gráfico de rosca com a proporção de semanas em cada nível de alerta">
-            -->
             <figure class="grafico">
-                <div class="espaco-grafico">Visual 3 do Power BI: distribuição das semanas por nível de alerta</div>
+                <img src="img/painel/visual-3-niveis-alerta.png" alt="Gráfico de rosca com o número de semanas em cada nível de alerta do InfoDengue">
                 <figcaption>Quantas semanas ficaram em cada nível de alerta do InfoDengue: verde, amarelo, laranja e vermelho.</figcaption>
             </figure>
         </section>
@@ -128,15 +106,9 @@
                 no geral. É uma associação fraca, não uma previsão sozinha: o clima entra na conta junto
                 com o histórico e o Rt.
             </p>
-            <!--
-                Visual 2 do Power BI (Kell).
-                Para colocar: exporte o visual como imagem PNG, salve em site/img/powerbi/visual-2-temperatura-umidade.png
-                e troque o <div class="espaco-grafico"> abaixo por:
-                <img src="img/powerbi/visual-2-temperatura-umidade.png" alt="Gráfico de dispersão da temperatura média pela umidade média, com bolhas do tamanho do número de casos">
-            -->
             <figure class="grafico">
-                <div class="espaco-grafico">Visual 2 do Power BI: temperatura × umidade, com a bolha do tamanho dos casos</div>
-                <figcaption>Cada bolha é uma semana. Quanto maior a bolha, mais casos naquela semana.</figcaption>
+                <img src="img/painel/visual-2-temperatura-umidade.png" alt="Gráfico de bolhas com a temperatura média e a umidade média de cada semana do ano">
+                <figcaption>Cada bolha é uma semana do ano (1 a 53), com a média do clima de 2018 a 2026. Quanto maior a bolha, mais casos essa semana já teve.</figcaption>
             </figure>
         </section>
 

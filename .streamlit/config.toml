@@ -1,0 +1,13 @@
+# Tema do painel em Streamlit (paleta do FAROL)
+[theme]
+base = "dark"
+primaryColor = "#38E4AE"
+backgroundColor = "#0A2246"
+secondaryBackgroundColor = "#102D57"
+textColor = "#FFFFFF"
+
+[server]
+headless = true
+
+[browser]
+gatherUsageStats = false
