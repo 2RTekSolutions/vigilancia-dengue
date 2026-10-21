@@ -4,6 +4,8 @@ Projeto de extensão do curso de Desenvolvimento de Software Multiplataforma (DS
 
 Um sistema aberto que prevê as semanas de maior risco de dengue em Olímpia, organiza as denúncias de criadouro feitas pela população e ajuda o controle de vetores a decidir onde ir primeiro. A dengue precisa ser combatida antes do pico, não depois.
 
+**Site:** https://2rteksolutions.github.io/vigilancia-dengue/ · **Simulador:** https://2rteksolutions.github.io/vigilancia-dengue/simulador.html
+
 ## Grupo
 
 | Nome | GitHub |

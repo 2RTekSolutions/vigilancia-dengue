@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Os números · FAROL</title>
+    <link rel="stylesheet" href="css/estilo.css">
+</head>
+<body>
+    <header class="topo">
+        <div class="container">
+            <a href="index.html"><img class="marca" src="img/farol-marca.jpg" alt="FAROL"></a>
+            <nav>
+                <ul class="menu">
+                    <li><a href="index.html">Início</a></li>
+                    <li><a class="ativo" href="dados.html">Os números</a></li>
+                    <li><a href="proposta.html">O FAROL</a></li>
+                    <li><a href="sobre.html">Sobre</a></li>
+                    <li><a class="destaque" href="simulador.html">Simulador</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <main class="container">
+        <h1>Os números</h1>
+        <p class="chamada">
+            Dados públicos do InfoDengue, somados por semana. Nenhum dado de paciente.
+        </p>
+
+        <section>
+            <h2>O resumo</h2>
+            <!--
+                Visual 5 do Power BI (Kell).
+                Para colocar: exporte o visual como imagem PNG, salve em site/img/powerbi/visual-5-cartoes.png
+                e troque o <div class="espaco-grafico"> abaixo por:
+                <img src="img/powerbi/visual-5-cartoes.png" alt="Cartões com o total de casos, a média do Rt e o número de semanas em nível crítico">
+            -->
+            <figure class="grafico">
+                <div class="espaco-grafico">Visual 5 do Power BI: total de casos, média do Rt e semanas em nível crítico</div>
+                <figcaption>Os números gerais do período, antes dos detalhes.</figcaption>
+            </figure>
+        </section>
+
+        <section>
+            <h2>A dengue volta todo ano</h2>
+            <p>
+                Todo ano o número de casos sobe a partir de fevereiro e chega ao pico entre março e maio,
+                na época mais quente e chuvosa. Fora dessa época, os casos quase somem.
+            </p>
+            <!--
+                Visual 1 do Power BI (Kell).
+                Para colocar: exporte o visual como imagem PNG, salve em site/img/powerbi/visual-1-casos-temperatura.png
+                e troque o <div class="espaco-grafico"> abaixo por:
+                <img src="img/powerbi/visual-1-casos-temperatura.png" alt="Casos de dengue por semana em colunas e a temperatura média em linha">
+            -->
+            <figure class="grafico">
+                <div class="espaco-grafico">Visual 1 do Power BI: casos por semana (colunas) e temperatura média (linha)</div>
+                <figcaption>Os picos de casos aparecem sempre na mesma época do ano, depois das semanas mais quentes.</figcaption>
+            </figure>
+        </section>
+
+        <section>
+            <h2>O sinal aparece antes do pico</h2>
+            <p>
+                O Rt diz quantas pessoas cada doente infecta. Acima de 1, a transmissão está crescendo.
+                Nos anos de epidemia, o Rt passou de 1 já em janeiro, de 13 a 17 semanas antes do pico.
+                Em Olímpia, em 2024, ele ficou acima de 1 desde a primeira semana do ano, e o pico veio
+                só na semana 18.
+            </p>
+            <!--
+                Visual 4 do Power BI (Kell).
+                Para colocar: exporte o visual como imagem PNG, salve em site/img/powerbi/visual-4-rt-ano-semana.png
+                e troque o <div class="espaco-grafico"> abaixo por:
+                <img src="img/powerbi/visual-4-rt-ano-semana.png" alt="Mapa de calor do Rt por ano e semana epidemiológica, com as semanas de Rt acima de 1 destacadas">
+            -->
+            <figure class="grafico">
+                <div class="espaco-grafico">Visual 4 do Power BI: Rt por ano e semana epidemiológica</div>
+                <figcaption>Cada linha é um ano e cada coluna, uma semana. As semanas com Rt acima de 1 aparecem destacadas.</figcaption>
+            </figure>
+            <p>
+                O sinal chega cedo, mas sozinho ele não diz o tamanho da epidemia: o Rt também passa de 1
+                em anos calmos. Por isso o FAROL junta o Rt com o histórico da cidade e o clima.
+            </p>
+        </section>
+
+        <section>
+            <h2>Mas nunca do mesmo tamanho</h2>
+            <p>
+                A época se repete, o tamanho não. Repetir o plano do ano passado não funciona, porque
+                ninguém sabe de antemão se o próximo verão vai ser calmo ou de epidemia.
+            </p>
+
+            <div class="cartao">
+                <table class="tabela">
+                    <caption>Casos notificados de dengue por ano</caption>
+                    <thead>
+                        <tr>
+                            <th>Ano</th>
+                            <th>Olímpia/SP</th>
+                            <th>Itanhaém/SP</th>
+                            <th>Viçosa/MG</th>
+                        </tr>
+                    </thead>
+                    <tbody id="corpo-tabela"></tbody>
+                </table>
+                <p class="nota">Em destaque, o pior ano de cada cidade. 2026 vai até a semana 40 (início de outubro).</p>
+                <ul class="lista" id="comparacoes"></ul>
+            </div>
+
+            <!--
+                Visual 3 do Power BI (Kell).
+                Para colocar: exporte o visual como imagem PNG, salve em site/img/powerbi/visual-3-niveis-alerta.png
+                e troque o <div class="espaco-grafico"> abaixo por:
+                <img src="img/powerbi/visual-3-niveis-alerta.png" alt="Gráfico de rosca com a proporção de semanas em cada nível de alerta">
+            -->
+            <figure class="grafico">
+                <div class="espaco-grafico">Visual 3 do Power BI: distribuição das semanas por nível de alerta</div>
+                <figcaption>Quantas semanas ficaram em cada nível de alerta do InfoDengue: verde, amarelo, laranja e vermelho.</figcaption>
+            </figure>
+        </section>
+
+        <section>
+            <h2>O clima dá o contexto</h2>
+            <p>
+                As semanas com mais casos são, em média, um pouco mais quentes e úmidas que as outras.
+                Em Olímpia, as 10% com mais casos tiveram 24,7 °C e 67% de umidade, contra 23,8 °C e 61%
+                no geral. É uma associação fraca, não uma previsão sozinha: o clima entra na conta junto
+                com o histórico e o Rt.
+            </p>
+            <!--
+                Visual 2 do Power BI (Kell).
+                Para colocar: exporte o visual como imagem PNG, salve em site/img/powerbi/visual-2-temperatura-umidade.png
+                e troque o <div class="espaco-grafico"> abaixo por:
+                <img src="img/powerbi/visual-2-temperatura-umidade.png" alt="Gráfico de dispersão da temperatura média pela umidade média, com bolhas do tamanho do número de casos">
+            -->
+            <figure class="grafico">
+                <div class="espaco-grafico">Visual 2 do Power BI: temperatura × umidade, com a bolha do tamanho dos casos</div>
+                <figcaption>Cada bolha é uma semana. Quanto maior a bolha, mais casos naquela semana.</figcaption>
+            </figure>
+        </section>
+
+        <section>
+            <h2>Por que isso importa</h2>
+            <ul class="lista">
+                <li>Se a vigilância souber cedo que o ano vai ser de epidemia, dá tempo de reforçar o controle de vetores e a rede de saúde antes do pico.</li>
+                <li>A equipe de campo é pequena para a cidade inteira. Na epidemia, ela precisa de uma fila de visitas por prioridade.</li>
+                <li>O problema é o mesmo em cidades diferentes. Um sistema que funciona com dado público serve para qualquer município.</li>
+            </ul>
+            <p><a class="botao" href="proposta.html">Conheça o FAROL</a></p>
+        </section>
+    </main>
+
+    <footer class="rodape">
+        <div class="container">
+            <p>Fonte dos dados: InfoDengue (Fiocruz/FGV). Só dados públicos e agregados por semana.</p>
+            <p>Este site não substitui o boletim oficial da Secretaria de Saúde. Com sintomas, procure a UBS.</p>
+            <p>Projeto de extensão · Desenvolvimento de Software Multiplataforma · Fatec Olímpia</p>
+            <p class="assinatura">
+                Desenvolvido por
+                <a href="https://www.2rteksolutions.com.br">
+                    <img src="img/2rtek-icone.png" alt="" width="28" height="28">
+                    <img src="img/2rtek-nome.png" alt="2RTek Solutions" width="86" height="22">
+                </a>
+            </p>
+        </div>
+    </footer>
+
+    <script src="js/numeros.js"></script>
+    <script src="js/tabela.js"></script>
+</body>
+</html>
