@@ -51,6 +51,9 @@ function valoresSazonais(semanas, se, anoReferencia) {
   return semanas.filter((s) => s.ano < anoReferencia && alvo.has(s.se)).map((s) => s.casos);
 }
 
+// Projeção = nível das últimas 4 semanas x formato da mesma época nos anos anteriores.
+// O formato (razão sazonal) é limitado entre metade e o dobro, para a conta não explodir
+// nem desabar quando o ano atual foge do histórico (ex.: uma epidemia maior que todas).
 export function preverSazonal(semanas, horizonte = 4) {
   if (semanas.length < 4) return null;
   const ultima = semanas.at(-1);
@@ -58,22 +61,22 @@ export function preverSazonal(semanas, horizonte = 4) {
   if (anosAnteriores.size < 2) return null;
 
   const recentes = semanas.slice(-4);
-  const realRecente = soma(recentes.map((s) => s.casos));
-  const baseRecente = soma(
-    recentes.map((s) => mediana(valoresSazonais(semanas, s.se, ultima.ano)) ?? 0),
-  );
-  const ajuste = baseRecente === 0 ? 1 : limitar(realRecente / baseRecente, 0.25, 4);
+  const nivelRecente = soma(recentes.map((s) => s.casos)) / 4;
+  const baseRecente =
+    soma(recentes.map((s) => mediana(valoresSazonais(semanas, s.se, ultima.ano)) ?? 0)) / 4;
+  const razao = (valor, minimo, maximo) => limitar(((valor ?? 0) + 1) / (baseRecente + 1), minimo, maximo);
 
   const projetadas = proximasSemanas(ultima, horizonte).map((alvo) => {
     const valores = valoresSazonais(semanas, alvo.se, ultima.ano);
+    const valor = nivelRecente * razao(mediana(valores), 0.5, 2);
     return {
       ...alvo,
-      valor: (mediana(valores) ?? 0) * ajuste,
-      inferior: (percentil(valores, 0.25) ?? 0) * ajuste,
-      superior: (percentil(valores, 0.75) ?? 0) * ajuste,
+      valor,
+      inferior: Math.min(valor, nivelRecente * razao(percentil(valores, 0.25), 0.25, 2)),
+      superior: Math.max(valor, nivelRecente * razao(percentil(valores, 0.75), 0.5, 4)),
     };
   });
-  return { ajuste, semanas: projetadas };
+  return { nivelRecente, semanas: projetadas };
 }
 
 // Faixa do próprio município. Não é o critério do InfoDengue.
