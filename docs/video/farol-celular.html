@@ -1,0 +1,689 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<title>FAROL no celular</title>
+<!--
+  Animação do vídeo "FAROL no celular" (visão de futuro: morador e agente de endemias).
+  Cada quadro é desenhado por render(t), com t em segundos, e o gravar.mjs fotografa
+  os quadros um a um. Aberta direto no navegador, a página toca sozinha em loop.
+  Telas ilustrativas: dados, endereços e protocolos são fictícios.
+-->
+<style>
+  :root {
+    --fundo: #0a2246;
+    --fundo-2: #10305e;
+    --fundo-3: #173a70;
+    --ciano: #38e4ae;
+    --ciano-2: #00b4d8;
+    --azul: #1d63b8;
+    --destaque: #d9ed92;
+    --texto: #ffffff;
+    --texto-2: #b9c7e0;
+    --alta: #ff6b6b;
+    --media: #ffb347;
+    --laranja: #ff9f43;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { width: 720px; height: 1280px; overflow: hidden; }
+  body {
+    background: var(--fundo);
+    color: var(--texto);
+    font-family: "Noto Sans", "Liberation Sans", Arial, sans-serif;
+    position: relative;
+  }
+
+  /* Faixa de cima: marca, papel e legenda */
+  .marca { position: absolute; top: 34px; left: 50%; transform: translateX(-50%); height: 58px; }
+  .papel {
+    position: absolute; top: 112px; left: 50%; transform: translateX(-50%);
+    padding: 6px 18px; border-radius: 999px; font-size: 20px; font-weight: 700;
+    letter-spacing: .04em; text-transform: uppercase; white-space: nowrap;
+  }
+  .papel.morador { background: var(--destaque); color: var(--fundo); }
+  .papel.agente { background: linear-gradient(90deg, var(--ciano), var(--ciano-2)); color: var(--fundo); }
+  .papel.futuro { border: 2px solid var(--ciano); color: var(--ciano); }
+  .papel.previsao { background: var(--azul); color: var(--texto); box-shadow: 0 0 0 2px var(--ciano); }
+
+  /* Tela de bloqueio com notificação */
+  .bloqueio { background: linear-gradient(170deg, #1d63b8 0%, #0a2246 70%); text-align: center; }
+  .bloqueio .hora { font-size: 84px; font-weight: 300; margin-top: 70px; letter-spacing: -2px; }
+  .bloqueio .dia { font-size: 19px; color: #d6e4ff; }
+  .bloqueio .aviso-push { top: 290px; text-align: left; }
+  .aviso-push.alerta { border-left: 6px solid var(--laranja); }
+
+  /* Gráfico da previsão */
+  .grafico-prev svg { width: 100%; display: block; }
+  .legenda-graf { font-size: 14px; color: var(--texto-2); margin-top: 8px; }
+  .legenda-graf span { display: inline-block; margin-right: 12px; }
+  .marca-cor { display: inline-block; width: 18px; height: 4px; vertical-align: middle; margin-right: 4px; }
+  .acao { border-color: var(--destaque); }
+  .legenda {
+    position: absolute; top: 162px; left: 40px; right: 40px; text-align: center;
+    font-size: 31px; line-height: 1.3; font-weight: 700;
+  }
+  .rodape-video {
+    position: absolute; bottom: 30px; left: 0; right: 0; text-align: center;
+    font-size: 19px; color: var(--texto-2);
+  }
+
+  /* Celular */
+  .celular {
+    position: absolute; left: 140px; top: 290px; width: 440px; height: 920px;
+    border-radius: 58px; background: #050d1c; padding: 14px;
+    box-shadow: 0 0 0 2px #2a4a80, 0 30px 80px rgba(0,0,0,.55), 0 0 90px rgba(56,228,174,.12);
+  }
+  .tela {
+    position: relative; width: 412px; height: 892px; border-radius: 46px;
+    overflow: hidden; background: var(--fundo);
+  }
+  .barra-status {
+    position: absolute; top: 0; left: 0; right: 0; height: 40px; z-index: 5;
+    display: block; padding: 12px 30px 0; font-size: 15px; font-weight: 700;
+  }
+  .barra-status .dir { float: right; letter-spacing: 2px; }
+  .notch {
+    position: absolute; top: 10px; left: 50%; transform: translateX(-50%);
+    width: 110px; height: 30px; border-radius: 20px; background: #050d1c; z-index: 6;
+  }
+
+  .cena { position: absolute; inset: 0; padding: 52px 20px 20px; }
+  .cabecalho-app {
+    margin: -52px -20px 18px; padding: 56px 22px 18px;
+    background: linear-gradient(135deg, var(--azul), #164f95);
+  }
+  .cabecalho-app.agente { background: linear-gradient(135deg, #0d2c5c, #123a74); border-bottom: 3px solid var(--ciano); }
+  .cabecalho-app small { display: block; font-size: 16px; color: #d6e4ff; }
+  .cabecalho-app strong { display: block; font-size: 25px; }
+
+  .cartao {
+    background: var(--fundo-2); border: 1px solid #234a85; border-radius: 18px;
+    padding: 18px; margin-bottom: 18px;
+  }
+  .rotulo { font-size: 14px; color: var(--texto-2); text-transform: uppercase; letter-spacing: .06em; }
+  .grande { font-size: 27px; font-weight: 700; margin-top: 4px; }
+  .etiqueta {
+    display: inline-block; padding: 3px 10px; border-radius: 999px;
+    font-size: 13px; font-weight: 700; color: #1b1300;
+  }
+  .etiqueta.laranja { background: var(--laranja); }
+  .etiqueta.alta { background: var(--alta); color: #2a0606; }
+  .etiqueta.media { background: var(--media); }
+  .etiqueta.baixa { background: var(--ciano); color: var(--fundo); }
+  .etiqueta.nova { background: var(--destaque); color: var(--fundo); }
+
+  .botao-app {
+    display: block; width: 100%; padding: 18px; border: 0; border-radius: 16px;
+    background: linear-gradient(90deg, var(--ciano), var(--ciano-2));
+    color: var(--fundo); font: inherit; font-size: 22px; font-weight: 800; text-align: center;
+  }
+  .botao-app.secundario { background: transparent; border: 2px solid var(--ciano); color: var(--ciano); }
+  .pressionado { filter: brightness(1.25); transform: scale(.97); }
+
+  .texto-2 { color: var(--texto-2); font-size: 17px; }
+  .linha { padding: 12px 0; border-bottom: 1px solid #22467d; font-size: 16px; }
+  .linha:last-child { border-bottom: 0; }
+
+  /* Câmera */
+  .camera { background: #000; padding: 0; }
+  .visor { position: absolute; inset: 0; }
+  .visor svg { width: 100%; height: 100%; }
+  .mira {
+    position: absolute; left: 66px; top: 260px; width: 280px; height: 280px;
+    border: 3px solid rgba(255,255,255,.85); border-radius: 20px;
+  }
+  .obturador {
+    position: absolute; bottom: 46px; left: 50%; margin-left: -42px;
+    width: 84px; height: 84px; border-radius: 50%; border: 6px solid #fff; background: rgba(255,255,255,.25);
+  }
+  .flash { position: absolute; inset: 0; background: #fff; opacity: 0; }
+  .aviso-camera {
+    position: absolute; top: 70px; left: 20px; right: 20px; text-align: center;
+    font-size: 17px; background: rgba(0,0,0,.45); padding: 10px; border-radius: 12px;
+  }
+
+  /* Formulário */
+  .foto-mini { width: 100%; height: 170px; border-radius: 14px; overflow: hidden; margin-bottom: 14px; }
+  .foto-mini svg { width: 100%; height: 100%; }
+  .chips { margin: 8px 0 14px; }
+  .chip {
+    display: inline-block; padding: 8px 14px; margin: 0 6px 8px 0; border-radius: 999px;
+    border: 2px solid #2d5596; font-size: 17px; color: var(--texto);
+  }
+  .chip.ligado { background: var(--ciano); border-color: var(--ciano); color: var(--fundo); font-weight: 700; }
+  .mapa-mini { height: 150px; border-radius: 14px; overflow: hidden; margin: 8px 0 8px; }
+  .mapa-mini svg { width: 100%; height: 100%; }
+
+  /* Linha do tempo da denúncia */
+  .etapas { margin-top: 6px; }
+  .etapa { position: relative; padding: 0 0 26px 40px; font-size: 20px; }
+  .etapa:before {
+    content: ""; position: absolute; left: 10px; top: 24px; bottom: 0; width: 2px; background: #2d5596;
+  }
+  .etapa:last-child:before { display: none; }
+  .bolinha {
+    position: absolute; left: 0; top: 2px; width: 22px; height: 22px; border-radius: 50%;
+    border: 2px solid #2d5596; background: var(--fundo);
+  }
+  .etapa.ok .bolinha { background: var(--ciano); border-color: var(--ciano); }
+  .etapa.ok .bolinha:after {
+    content: ""; position: absolute; left: 6px; top: 2px; width: 6px; height: 11px;
+    border: solid var(--fundo); border-width: 0 3px 3px 0; transform: rotate(45deg);
+  }
+  .etapa small { display: block; color: var(--texto-2); font-size: 16px; }
+
+  .selo-ok {
+    width: 96px; height: 96px; border-radius: 50%; margin: 18px auto 14px;
+    background: linear-gradient(135deg, var(--ciano), var(--ciano-2)); position: relative;
+  }
+  .selo-ok:after {
+    content: ""; position: absolute; left: 35px; top: 18px; width: 22px; height: 44px;
+    border: solid var(--fundo); border-width: 0 8px 8px 0; transform: rotate(45deg);
+  }
+  .centro { text-align: center; }
+
+  /* Fila do agente */
+  .item-fila { background: var(--fundo-2); border: 1px solid #234a85; border-radius: 16px; padding: 14px 16px; margin-bottom: 12px; }
+  .item-fila strong { font-size: 19px; }
+  .item-fila .texto-2 { font-size: 16px; }
+  .item-fila .etiqueta { float: right; }
+  .item-fila.destacado { border-color: var(--destaque); box-shadow: 0 0 0 2px rgba(217,237,146,.35); }
+
+  .mapa-grande { position: absolute; left: 0; right: 0; top: 118px; bottom: 0; }
+  .mapa-grande svg { width: 100%; height: 100%; }
+
+  .aviso-push {
+    position: absolute; left: 12px; right: 12px; top: 48px; z-index: 4;
+    background: rgba(240,246,255,.97); color: var(--fundo); border-radius: 20px; padding: 14px 16px;
+    box-shadow: 0 12px 30px rgba(0,0,0,.4);
+  }
+  .aviso-push small { display: block; font-size: 13px; color: #456; }
+  .aviso-push strong { display: block; font-size: 17px; }
+
+  .toast {
+    position: absolute; left: 24px; right: 24px; bottom: 30px; padding: 16px; border-radius: 16px;
+    background: var(--destaque); color: var(--fundo); font-weight: 800; text-align: center; font-size: 18px;
+  }
+
+  /* Abertura e fechamento */
+  .tela-cheia { position: absolute; inset: 0; text-align: center; }
+  .tela-cheia .logo { width: 640px; margin: 250px auto 0; display: block; border-radius: 12px; }
+  .tela-cheia h2 { font-size: 38px; margin: 26px 50px 0; line-height: 1.25; }
+  .tela-cheia .sub { font-size: 24px; color: var(--texto-2); margin-top: 14px; }
+  .marcos { text-align: left; margin: 40px 70px 0; }
+  .marco { padding: 16px 0 16px 120px; position: relative; border-bottom: 1px solid #234a85; font-size: 24px; line-height: 1.3; }
+  .marco b {
+    position: absolute; left: 0; top: 14px; font-size: 26px;
+    background: linear-gradient(90deg, var(--ciano), var(--ciano-2)); -webkit-background-clip: text; color: transparent;
+  }
+  .gradiente-texto { background: linear-gradient(90deg, var(--ciano), var(--ciano-2)); -webkit-background-clip: text; color: transparent; }
+
+  /* Toque do dedo */
+  .toque {
+    position: absolute; width: 56px; height: 56px; margin: -28px 0 0 -28px; border-radius: 50%;
+    background: rgba(255,255,255,.35); border: 3px solid rgba(255,255,255,.9);
+    pointer-events: none; z-index: 20; opacity: 0;
+  }
+</style>
+</head>
+<body>
+
+<!-- ====== Faixa de cima ====== -->
+<img class="marca" data-ini="3.2" data-fim="56.6" src="../../site/img/farol-marca.jpg" alt="FAROL">
+
+<div class="papel futuro" data-ini="0" data-fim="3.2">Visão de futuro</div>
+<div class="papel previsao" data-ini="3.2" data-fim="14">1 · Alerta antecipado</div>
+<div class="papel morador" data-ini="14" data-fim="35.6">2 · Morador</div>
+<div class="papel agente" data-ini="35.6" data-fim="52">3 · Agente de endemias</div>
+<div class="papel morador" data-ini="52" data-fim="56.6">2 · Morador</div>
+
+<p class="legenda" data-ini="3.2" data-fim="7.4">O FAROL prevê o risco antes de o pico chegar.</p>
+<p class="legenda" data-ini="7.4" data-fim="14">A vigilância vê quando o risco passa do limite e onde agir.</p>
+<p class="legenda" data-ini="14" data-fim="18.2">E a população recebe o alerta a tempo de agir.</p>
+<p class="legenda" data-ini="18.2" data-fim="22.6">Viu água parada? Avise a vigilância.</p>
+<p class="legenda" data-ini="22.6" data-fim="26.4">Tire uma foto do possível criadouro.</p>
+<p class="legenda" data-ini="26.4" data-fim="31.6">Escolha o tipo. O GPS marca o local.</p>
+<p class="legenda" data-ini="31.6" data-fim="35.6">Pronto: a denúncia entra na fila da vigilância.</p>
+<p class="legenda" data-ini="35.6" data-fim="42">O agente começa o dia com o risco da cidade e a fila do setor.</p>
+<p class="legenda" data-ini="42" data-fim="46">O mapa mostra onde agir primeiro.</p>
+<p class="legenda" data-ini="46" data-fim="52">Na visita, ele registra o que fez.</p>
+<p class="legenda" data-ini="52" data-fim="56.6">E o morador vê que o problema foi resolvido.</p>
+
+<p class="rodape-video" data-ini="3.2" data-fim="56.6">Telas ilustrativas · dados e endereços fictícios</p>
+
+<!-- ====== Abertura ====== -->
+<div class="tela-cheia" data-ini="0" data-fim="3.2">
+  <img class="logo" src="../../site/img/farol-logo.jpg" alt="FAROL">
+  <h2>Como o FAROL vai funcionar<br><span class="gradiente-texto">no celular</span></h2>
+  <p class="sub">Prever, avisar, agir e resolver</p>
+</div>
+
+<!-- ====== Celular ====== -->
+<div class="celular" data-ini="3.2" data-fim="56.6">
+  <div class="tela" id="tela">
+    <div class="notch"></div>
+    <div class="barra-status"><span id="hora-status">9:41</span><span class="dir">▮▮▮ ◔</span></div>
+
+    <!-- P1: alerta antecipado na tela de bloqueio da vigilância -->
+    <div class="cena bloqueio" data-ini="3.2" data-fim="7.4">
+      <div class="hora">8:00</div>
+      <div class="dia">segunda-feira</div>
+      <div class="aviso-push alerta" id="push-prev" data-t="4.0" data-desce="1">
+        <small>FAROL · Previsão · agora</small>
+        <strong>Risco alto no Setor B2 em 3 semanas</strong>
+        <small style="margin-top:4px">Toque para ver a previsão e a ação sugerida</small>
+      </div>
+    </div>
+
+    <!-- P2: gráfico da previsão -->
+    <div class="cena" data-ini="7.4" data-fim="14">
+      <div class="cabecalho-app agente">
+        <small>Vigilância epidemiológica · Olímpia/SP</small>
+        <strong>Previsão · Setor B2</strong>
+      </div>
+      <div class="cartao grafico-prev" style="padding:12px 12px 10px">
+        <svg viewBox="0 0 372 260" font-family="Noto Sans, sans-serif">
+          <g stroke="#22467d" stroke-width="1"><path d="M30 212 H360 M30 172 H360 M30 132 H360 M30 92 H360 M30 52 H360"/></g>
+          <g data-t="9.4">
+            <polygon points="218.6,172 242.1,150 265.7,124 289.3,92 312.9,64 336.4,48 360,52 360,134 336.4,126 312.9,132 289.3,144 265.7,156 242.1,166 218.6,172"
+                     fill="rgba(56,228,174,.18)"/>
+          </g>
+          <line x1="30" y1="130" x2="360" y2="130" stroke="#ff9f43" stroke-width="2" stroke-dasharray="6 5"/>
+          <text x="34" y="122" fill="#ff9f43" font-size="14" font-weight="700">limite de epidemia</text>
+          <line x1="218.6" y1="20" x2="218.6" y2="222" stroke="#b9c7e0" stroke-width="1.5" stroke-dasharray="3 4"/>
+          <text x="214" y="34" fill="#b9c7e0" font-size="13" text-anchor="end">hoje</text>
+          <path d="M30 212 L53.6 210 L77.1 206 L100.7 208 L124.3 202 L147.9 196 L171.4 190 L195 182 L218.6 172"
+                fill="none" stroke="#ffffff" stroke-width="3.5" stroke-linejoin="round" stroke-linecap="round" data-traco="7.8,1.5"/>
+          <path d="M218.6 172 L242.1 158 L265.7 140 L289.3 116 L312.9 94 L336.4 80 L360 84"
+                fill="none" stroke="#38e4ae" stroke-width="3.5" stroke-dasharray="8 6" stroke-linecap="round" data-t="9.4"/>
+          <g data-t="10.8">
+            <circle cx="275.5" cy="130" r="14" fill="rgba(255,159,67,.3)"/>
+            <circle cx="275.5" cy="130" r="7" fill="#ff9f43" stroke="#fff" stroke-width="2.5"/>
+            <line x1="206" y1="78" x2="266" y2="123" stroke="#ff9f43" stroke-width="1.5"/>
+            <rect x="78" y="56" width="128" height="42" rx="8" fill="#0a2246" stroke="#ff9f43" stroke-width="1.5"/>
+            <text x="142" y="74" fill="#fff" font-size="14" text-anchor="middle" font-weight="700">semana 21</text>
+            <text x="142" y="90" fill="#b9c7e0" font-size="12" text-anchor="middle">passa do limite</text>
+          </g>
+          <g fill="#b9c7e0" font-size="12" text-anchor="middle">
+            <text x="30" y="246">sem 10</text><text x="124.3" y="246">sem 14</text>
+            <text x="218.6" y="246">sem 18</text><text x="312.9" y="246">sem 22</text>
+          </g>
+        </svg>
+        <div class="legenda-graf">
+          <span><i class="marca-cor" style="background:#fff"></i>casos</span>
+          <span><i class="marca-cor" style="background:#38e4ae"></i>previsão</span>
+          <span><i class="marca-cor" style="background:rgba(56,228,174,.35);height:10px"></i>faixa provável</span>
+        </div>
+        <div class="legenda-graf" style="margin-top:2px">Previsão ilustrativa · números fictícios</div>
+      </div>
+      <div class="cartao" data-t="10.4" style="padding:12px 16px">
+        <div class="rotulo">Sinais que a previsão usa</div>
+        <p style="font-size:16px;margin-top:4px">Rt acima de 1 há 6 semanas · casos subindo há 5 semanas · época de chuva</p>
+      </div>
+      <div class="cartao acao" data-t="11.6">
+        <div class="rotulo">Ação sugerida para esta semana</div>
+        <p style="font-size:19px;font-weight:700;margin:4px 0 12px">Mutirão nos setores B2 e C3</p>
+        <button class="botao-app" id="b-alertar" style="padding:14px;font-size:19px">Alertar moradores do bairro</button>
+      </div>
+    </div>
+
+    <!-- P3: morador recebe o alerta da vigilância -->
+    <div class="cena bloqueio" data-ini="14" data-fim="18.2">
+      <div class="hora">8:30</div>
+      <div class="dia">segunda-feira</div>
+      <div class="aviso-push alerta" id="push-morador" data-t="14.6" data-desce="1">
+        <small>FAROL · Vigilância de Olímpia · agora</small>
+        <strong>Risco de dengue subindo no seu bairro</strong>
+        <small style="margin-top:4px">Confira quintal, vasos e calhas. Achou água parada? Avise pelo app.</small>
+      </div>
+    </div>
+
+    <!-- M1: início do morador -->
+    <div class="cena" data-ini="18.2" data-fim="22.6">
+      <div class="cabecalho-app">
+        <small>FAROL · Olímpia/SP</small>
+        <strong>Olá! Como podemos ajudar?</strong>
+      </div>
+      <div class="cartao">
+        <div class="rotulo">Alerta de dengue nesta semana</div>
+        <div class="grande">Nível laranja <span class="etiqueta laranja">Atenção</span></div>
+        <p class="texto-2" style="margin-top:6px">Os casos estão subindo na cidade. Confira quintal, vasos e calhas.</p>
+      </div>
+      <button class="botao-app" id="b-avisar" style="margin:22px 0 26px">📷  Avisar sobre água parada</button>
+      <div class="cartao">
+        <div class="rotulo">Minhas denúncias</div>
+        <p class="texto-2" style="margin-top:8px">Você ainda não fez nenhuma denúncia.</p>
+      </div>
+      <div class="cartao">
+        <div class="rotulo">Dica da semana</div>
+        <p style="margin-top:6px;font-size:18px">10 minutos por semana eliminando água parada já quebram o ciclo do mosquito.</p>
+      </div>
+    </div>
+
+    <!-- M2: câmera -->
+    <div class="cena camera" data-ini="22.6" data-fim="26.4">
+      <div class="visor">
+        <svg viewBox="0 0 412 892" preserveAspectRatio="xMidYMid slice">
+          <defs>
+            <linearGradient id="ceu" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0" stop-color="#3d5a3a"/><stop offset="1" stop-color="#26381f"/>
+            </linearGradient>
+            <radialGradient id="agua" cx=".5" cy=".45" r=".6">
+              <stop offset="0" stop-color="#6fa7b8"/><stop offset="1" stop-color="#2f5f6e"/>
+            </radialGradient>
+          </defs>
+          <rect width="412" height="892" fill="url(#ceu)"/>
+          <rect y="560" width="412" height="332" fill="#4a3a28"/>
+          <g fill="#5d7d3c" opacity=".8">
+            <path d="M0 560 q20 -40 30 0 q15 -50 30 0 q12 -35 28 0 q18 -45 34 0 q10 -30 26 0 q20 -50 36 0 q14 -38 30 0 q16 -44 32 0 q12 -30 28 0 q18 -46 34 0 q14 -36 30 0 q16 -40 34 0 q12 -30 40 0 z"/>
+          </g>
+          <ellipse cx="206" cy="430" rx="150" ry="92" fill="#1a1a1a"/>
+          <ellipse cx="206" cy="422" rx="150" ry="92" fill="#262626"/>
+          <ellipse cx="206" cy="422" rx="96" ry="56" fill="#111"/>
+          <ellipse cx="206" cy="428" rx="88" ry="46" fill="url(#agua)"/>
+          <ellipse cx="180" cy="418" rx="30" ry="6" fill="#cfe7ef" opacity=".35"/>
+          <g stroke="#3a3a3a" stroke-width="5">
+            <path d="M80 400 l18 10 M95 372 l16 14 M330 400 l-18 10 M316 372 l-16 14 M140 498 l8 -16 M272 498 l-8 -16"/>
+          </g>
+          <g fill="#222"><circle cx="226" cy="430" r="2.5"/><circle cx="196" cy="438" r="2"/><circle cx="240" cy="420" r="1.8"/></g>
+        </svg>
+      </div>
+      <div class="aviso-camera">Enquadre o local com água parada</div>
+      <div class="mira"></div>
+      <div class="obturador" id="b-foto"></div>
+      <div class="flash" id="flash"></div>
+    </div>
+
+    <!-- M3: formulário -->
+    <div class="cena" data-ini="26.4" data-fim="31.6">
+      <div class="cabecalho-app">
+        <small>Nova denúncia</small>
+        <strong>O que você encontrou?</strong>
+      </div>
+      <div class="foto-mini">
+        <svg viewBox="0 0 412 220" preserveAspectRatio="xMidYMid slice">
+          <rect width="412" height="220" fill="#3d5a3a"/>
+          <rect y="160" width="412" height="60" fill="#4a3a28"/>
+          <ellipse cx="206" cy="122" rx="120" ry="70" fill="#262626"/>
+          <ellipse cx="206" cy="122" rx="76" ry="42" fill="#111"/>
+          <ellipse cx="206" cy="127" rx="70" ry="34" fill="#4f8798"/>
+        </svg>
+      </div>
+      <div class="rotulo">Tipo</div>
+      <div class="chips">
+        <span class="chip" id="chip-pneu" data-liga="27.9">Pneu</span>
+        <span class="chip">Vaso ou prato</span>
+        <span class="chip">Caixa d'água</span>
+        <span class="chip">Lixo ou entulho</span>
+        <span class="chip">Outro</span>
+      </div>
+      <div class="rotulo">Local</div>
+      <div class="mapa-mini">
+        <svg viewBox="0 0 372 130" preserveAspectRatio="xMidYMid slice">
+          <rect width="372" height="130" fill="#173a70"/>
+          <g stroke="#28508f" stroke-width="10"><path d="M0 40 H372 M0 100 H372 M90 0 V130 M230 0 V130 M330 0 V130"/></g>
+          <g data-t="28.6"><circle cx="160" cy="70" r="22" fill="rgba(56,228,174,.25)"/><circle cx="160" cy="70" r="9" fill="#38e4ae" stroke="#fff" stroke-width="3"/></g>
+        </svg>
+      </div>
+      <p class="texto-2" data-t="28.8">📍 Localização pelo GPS · Rua Exemplo, 120 · Setor B2</p>
+      <button class="botao-app" id="b-enviar" style="margin-top:16px">Enviar denúncia</button>
+    </div>
+
+    <!-- M4: confirmação -->
+    <div class="cena" data-ini="31.6" data-fim="35.6">
+      <div class="selo-ok"></div>
+      <p class="centro grande">Denúncia enviada!</p>
+      <p class="centro texto-2" style="margin:4px 0 24px">Protocolo nº 2471</p>
+      <div class="cartao">
+        <div class="rotulo" style="margin-bottom:14px">Andamento</div>
+        <div class="etapas">
+          <div class="etapa ok"><span class="bolinha"></span>Recebida<small>Hoje, 9:41</small></div>
+          <div class="etapa"><span class="bolinha"></span>Vistoria do agente<small>Aguardando</small></div>
+          <div class="etapa"><span class="bolinha"></span>Resolvida</div>
+        </div>
+      </div>
+      <p class="texto-2 centro" data-t="33.2">Você recebe um aviso a cada mudança.</p>
+    </div>
+
+    <!-- A0: troca para o app do agente -->
+    <div class="cena" data-ini="35.6" data-fim="37" style="background:linear-gradient(160deg,#0d2c5c,#0a2246)">
+      <img src="../../site/img/farol-marca.jpg" alt="" style="display:block;width:300px;margin:300px auto 16px;border-radius:10px">
+      <p class="centro" style="font-size:20px;color:#38e4ae;font-weight:700">Área do agente</p>
+    </div>
+
+    <!-- A1: fila do agente -->
+    <div class="cena" data-ini="37" data-fim="42">
+      <div class="cabecalho-app agente">
+        <small>Agente de endemias · Setor B2</small>
+        <strong>Bom dia! Sua fila de hoje</strong>
+      </div>
+      <div class="cartao" style="padding:12px 16px">
+        <div class="rotulo">Olímpia · semana 18</div>
+        <div style="margin-top:6px;font-size:17px">
+          <span class="etiqueta laranja">Alerta laranja</span>
+          &nbsp;Rt <b>1,3</b> · casos <b class="gradiente-texto">↑ subindo</b>
+        </div>
+        <div class="texto-2" style="margin-top:4px;font-size:15px">Previsão: passa do limite na semana 21</div>
+      </div>
+      <div class="item-fila destacado" data-t="38.6">
+        <span class="etiqueta nova">Nova</span>
+        <strong>#2471 Pneu com água</strong>
+        <div class="texto-2">Rua Exemplo, 120 · 150 m · com foto</div>
+        <div style="margin-top:6px"><span class="etiqueta alta" style="float:none">Prioridade alta</span></div>
+      </div>
+      <div class="item-fila">
+        <span class="etiqueta alta">Alta</span>
+        <strong>#2466 Caixa d'água aberta</strong>
+        <div class="texto-2">Rua Modelo, 45 · 380 m</div>
+      </div>
+      <div class="item-fila">
+        <span class="etiqueta media">Média</span>
+        <strong>#2459 Vasos com água</strong>
+        <div class="texto-2">Av. Fictícia, 900 · 620 m</div>
+      </div>
+      <div class="item-fila">
+        <span class="etiqueta baixa">Baixa</span>
+        <strong>#2450 Entulho no terreno</strong>
+        <div class="texto-2">Rua Teste, 12 · 840 m</div>
+      </div>
+      <button class="botao-app secundario" id="b-mapa" style="margin-top:6px">Ver no mapa</button>
+    </div>
+
+    <!-- A2: mapa -->
+    <div class="cena" data-ini="42" data-fim="46">
+      <div class="cabecalho-app agente">
+        <small>Setor B2 · 4 denúncias abertas</small>
+        <strong>Onde agir primeiro</strong>
+      </div>
+      <div class="mapa-grande">
+        <svg viewBox="0 0 412 774" preserveAspectRatio="xMidYMid slice">
+          <rect width="412" height="774" fill="#122e5b"/>
+          <g fill="#173a70">
+            <rect x="20" y="20" width="150" height="160" rx="6"/><rect x="200" y="20" width="190" height="160" rx="6"/>
+            <rect x="20" y="220" width="150" height="190" rx="6"/><rect x="200" y="220" width="190" height="190" rx="6"/>
+            <rect x="20" y="450" width="150" height="170" rx="6"/><rect x="200" y="450" width="190" height="170" rx="6"/>
+            <rect x="20" y="660" width="150" height="110" rx="6"/><rect x="200" y="660" width="190" height="110" rx="6"/>
+          </g>
+          <rect x="8" y="8" width="396" height="630" fill="none" stroke="#38e4ae" stroke-width="2" stroke-dasharray="10 8" opacity=".6"/>
+          <text x="20" y="660" fill="#38e4ae" font-size="14" opacity=".8" font-family="Noto Sans, sans-serif">Setor B2</text>
+          <path id="rota" d="M100 600 V430 H185 V200 H300 V120" fill="none" stroke="#d9ed92" stroke-width="5"
+                stroke-linecap="round" stroke-linejoin="round" data-traco="42.6,1.4"/>
+          <g>
+            <circle cx="100" cy="600" r="16" fill="rgba(29,99,184,.4)"/><circle cx="100" cy="600" r="8" fill="#1d63b8" stroke="#fff" stroke-width="3"/>
+            <text x="116" y="625" fill="#fff" font-size="14" font-family="Noto Sans, sans-serif">Você</text>
+          </g>
+          <g><circle id="p-2471" cx="185" cy="430" r="15" fill="#ff6b6b" stroke="#fff" stroke-width="3"/>
+            <text x="205" y="436" fill="#fff" font-size="16" font-weight="700" font-family="Noto Sans, sans-serif">1 · #2471</text></g>
+          <g><circle cx="185" cy="200" r="13" fill="#ff6b6b" stroke="#fff" stroke-width="3"/>
+            <text x="60" y="206" fill="#fff" font-size="15" font-family="Noto Sans, sans-serif">2 · #2466</text></g>
+          <g><circle cx="300" cy="120" r="13" fill="#ffb347" stroke="#fff" stroke-width="3"/>
+            <text x="248" y="96" fill="#fff" font-size="15" font-family="Noto Sans, sans-serif">3 · #2459</text></g>
+          <g><circle cx="330" cy="560" r="12" fill="#38e4ae" stroke="#fff" stroke-width="3"/>
+            <text x="268" y="592" fill="#fff" font-size="15" font-family="Noto Sans, sans-serif">4 · #2450</text></g>
+        </svg>
+      </div>
+    </div>
+
+    <!-- A3: visita -->
+    <div class="cena" data-ini="46" data-fim="52">
+      <div class="cabecalho-app agente">
+        <small>Denúncia #2471 · enviada há 2 h</small>
+        <strong>Pneu com água</strong>
+      </div>
+      <div class="foto-mini" style="height:130px">
+        <svg viewBox="0 0 412 220" preserveAspectRatio="xMidYMid slice">
+          <rect width="412" height="220" fill="#3d5a3a"/>
+          <rect y="160" width="412" height="60" fill="#4a3a28"/>
+          <ellipse cx="206" cy="122" rx="120" ry="70" fill="#262626"/>
+          <ellipse cx="206" cy="122" rx="76" ry="42" fill="#111"/>
+          <ellipse cx="206" cy="127" rx="70" ry="34" fill="#4f8798"/>
+        </svg>
+      </div>
+      <p class="texto-2" style="margin-bottom:14px">📍 Rua Exemplo, 120 · Setor B2</p>
+      <div class="cartao">
+        <div class="rotulo" style="margin-bottom:10px">Resultado da visita</div>
+        <div class="linha"><span class="chip" id="r-eliminado" data-liga="48" style="margin:0">Criadouro eliminado</span></div>
+        <div class="linha"><span class="chip" style="margin:0">Tratado com larvicida</span></div>
+        <div class="linha"><span class="chip" style="margin:0">Não encontrado</span></div>
+        <div class="linha"><span class="chip" style="margin:0">Morador ausente</span></div>
+      </div>
+      <button class="botao-app" id="b-registrar">Registrar visita</button>
+      <div class="toast" data-t="51">✔ Visita registrada · morador avisado</div>
+    </div>
+
+    <!-- M5: morador recebe o retorno -->
+    <div class="cena" data-ini="52" data-fim="56.6">
+      <div class="aviso-push" data-t="52.4" data-desce="1">
+        <small>FAROL · agora</small>
+        <strong>Sua denúncia nº 2471 foi resolvida</strong>
+      </div>
+      <div class="cabecalho-app">
+        <small>FAROL · Olímpia/SP</small>
+        <strong>Denúncia nº 2471</strong>
+      </div>
+      <div class="cartao">
+        <div class="rotulo" style="margin-bottom:14px">Andamento</div>
+        <div class="etapas">
+          <div class="etapa ok"><span class="bolinha"></span>Recebida<small>Hoje, 9:41</small></div>
+          <div class="etapa ok"><span class="bolinha"></span>Vistoria do agente<small>Hoje, 11:52</small></div>
+          <div class="etapa ok"><span class="bolinha"></span>Resolvida<small>Criadouro eliminado</small></div>
+        </div>
+      </div>
+      <div class="cartao centro" data-t="53.6" style="border-color:#d9ed92">
+        <p style="font-size:19px;font-weight:700">Obrigado por ajudar!</p>
+        <p class="texto-2" style="margin-top:4px">Um criadouro a menos no seu bairro.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ====== Fechamento ====== -->
+<div class="tela-cheia" data-ini="56.6" data-fim="62">
+  <img class="logo" src="../../site/img/farol-logo.jpg" alt="FAROL" style="width:520px;margin-top:110px">
+  <h2>Onde queremos chegar</h2>
+  <div class="marcos">
+    <div class="marco" data-t="57.4"><b>2027</b>Denúncias com foto e fila do controle de vetores</div>
+    <div class="marco" data-t="58"><b>2028</b>Mapa por setor e app com câmera e GPS</div>
+    <div class="marco" data-t="58.6"><b>2029</b>Previsão de risco validada</div>
+  </div>
+  <p class="sub" data-t="59.4" style="margin-top:44px">Telas ilustrativas. Hoje o FAROL é o site e o simulador.</p>
+</div>
+
+<div class="toque" id="toque"></div>
+
+<script>
+  const DURACAO = 62;
+  const FADE = 0.35;
+
+  // Toques do dedo: [segundo, alvo]
+  const TOQUES = [
+    [6.6, "#push-prev"],
+    [12.9, "#b-alertar"],
+    [17.2, "#push-morador"],
+    [21.4, "#b-avisar"],
+    [24.8, "#b-foto"],
+    [27.9, "#chip-pneu"],
+    [30.6, "#b-enviar"],
+    [41, "#b-mapa"],
+    [45.2, "#p-2471"],
+    [48, "#r-eliminado"],
+    [50.6, "#b-registrar"],
+  ];
+
+  const limitar = (x) => Math.max(0, Math.min(1, x));
+  const suave = (x) => x * x * (3 - 2 * x);
+
+  function render(t) {
+    // Cenas, legendas e blocos com início e fim
+    document.querySelectorAll("[data-ini]").forEach((el) => {
+      const ini = parseFloat(el.dataset.ini), fim = parseFloat(el.dataset.fim);
+      const entra = ini === 0 ? 1 : limitar((t - ini) / FADE);
+      const sai = fim >= DURACAO ? 1 : limitar((fim - t) / FADE);
+      const o = suave(Math.min(entra, sai));
+      el.style.opacity = o;
+      el.style.visibility = o > 0 ? "visible" : "hidden";
+    });
+
+    // Elementos que surgem num instante
+    document.querySelectorAll("[data-t]").forEach((el) => {
+      const p = suave(limitar((t - parseFloat(el.dataset.t)) / 0.45));
+      el.style.opacity = p;
+      const desloc = el.dataset.desce ? -60 : 14;
+      el.style.transform = `translateY(${(1 - p) * desloc}px)`;
+    });
+
+    // Estados que ligam num instante (chip escolhido)
+    document.querySelectorAll("[data-liga]").forEach((el) => {
+      el.classList.toggle("ligado", t >= parseFloat(el.dataset.liga));
+    });
+
+    // Hora da barra de status acompanha a história
+    document.getElementById("hora-status").textContent = t < 14 ? "8:00" : t < 18.2 ? "8:30" : "9:41";
+
+    // Flash da câmera
+    const f = document.getElementById("flash");
+    f.style.opacity = t >= 24.85 && t < 25.3 ? (1 - (t - 24.85) / 0.45) * 0.9 : 0;
+
+    // Rota no mapa desenhando
+    // Linhas que se desenham (rota do mapa, curva do gráfico): data-traco="início,duração"
+    document.querySelectorAll("[data-traco]").forEach((el) => {
+      const [ini, dur] = el.dataset.traco.split(",").map(parseFloat);
+      const comp = el.getTotalLength();
+      el.style.strokeDasharray = comp;
+      el.style.strokeDashoffset = comp * (1 - suave(limitar((t - ini) / dur)));
+    });
+
+    // Toque do dedo
+    const toque = document.getElementById("toque");
+    toque.style.opacity = 0;
+    document.querySelectorAll(".pressionado").forEach((el) => el.classList.remove("pressionado"));
+    for (const [seg, alvo] of TOQUES) {
+      const d = t - seg;
+      if (d > -0.35 && d < 0.5) {
+        const el = document.querySelector(alvo);
+        const r = el.getBoundingClientRect();
+        toque.style.left = r.left + r.width / 2 + "px";
+        toque.style.top = r.top + r.height / 2 + "px";
+        const aproxima = d < 0 ? 1 + d / 0.35 : 1;
+        const escala = d < 0 ? 1.3 - 0.3 * aproxima : 1 + d * 0.8;
+        toque.style.opacity = d < 0 ? aproxima : 1 - d / 0.5;
+        toque.style.transform = `scale(${escala})`;
+        if (d >= 0 && d < 0.25 && !(el instanceof SVGElement)) el.classList.add("pressionado");
+      }
+    }
+  }
+
+  window.render = render;
+  window.DURACAO = DURACAO;
+
+  // Aberta no navegador (fora da gravação), toca em loop
+  if (!location.search.includes("gravar")) {
+    const t0 = performance.now();
+    const passo = () => { render(((performance.now() - t0) / 1000) % DURACAO); requestAnimationFrame(passo); };
+    requestAnimationFrame(passo);
+  } else {
+    render(0);
+  }
+</script>
+</body>
+</html>
