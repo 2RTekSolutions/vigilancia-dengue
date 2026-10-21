@@ -49,6 +49,11 @@ h3 { font-size: 0.95rem; font-weight: 600; color: var(--tinta-2); }
 .marca-farol { display: block; height: 60px; width: auto; }
 .marca-sub { font-size: 0.95rem; font-weight: 500; color: var(--sobre-fundo-2); }
 #titulo-municipio { color: var(--ciano); }
+.voltar {
+  font-size: 0.9rem; font-weight: 600; color: var(--fundo); background: var(--ciano);
+  border-radius: 6px; padding: 8px 12px; text-decoration: none; white-space: nowrap;
+}
+.voltar:hover { background: var(--destaque); }
 
 .controles { display: flex; flex-wrap: wrap; align-items: flex-end; gap: 16px; }
 .controle { display: flex; flex-direction: column; gap: 4px; font-size: 0.8rem; color: var(--sobre-fundo-2); }

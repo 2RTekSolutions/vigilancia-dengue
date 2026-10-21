@@ -21,9 +21,10 @@ def imagem_base64(nome):
 
 LOGO = imagem_base64("farol-cabecalho.jpg")
 LOGO_2R = imagem_base64("2rtek-nome.png")
+# As iniciais destacadas formam o nome: F-A-R-O-L
 SUBTITULO = (
-    "Ferramenta de Antecipação de Risco e Orientação Local"
-    " · dados semanais do InfoDengue"
+    "<b>F</b>erramenta de <b>A</b>ntecipação de <b>R</b>isco e "
+    "<b>O</b>rientação <b>L</b>ocal · dados semanais do InfoDengue"
 )
 
 st.markdown(
@@ -38,7 +39,10 @@ st.markdown(
             <p>{SUBTITULO}</p>
         </div>
         <div class="direita">
-            <div><b>Projeto de extensão</b><br>DSM · Fatec Olímpia</div>
+            <div>
+                <b>Projeto de extensão</b> · DSM · Fatec Olímpia<br>
+                <span class="nomes">Renan Croffi e Raquel Duarte</span>
+            </div>
             <img class="empresa" src="data:image/png;base64,{LOGO_2R}" alt="2RTek">
         </div>
     </div>
