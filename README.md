@@ -121,12 +121,12 @@ O projeto usa só dado público e agregado nas fases 1 e 2, e funciona para qual
 | `tests/` | Testes do ETL (pytest) e das contas do simulador (Node) |
 | `notebooks/` | Análises exploratórias |
 | `data/` | Dados brutos e processados |
-| `docs/` | Requisitos, pitch, design e plano do simulador |
+| `docs/` | Requisitos, pitch, wireframes e mockups, design e plano do simulador |
 | `.github/workflows/` | Publicação do site no GitHub Pages |
 
 Pastas previstas para as próximas fases: API, coleta agendada, painel e app.
 
-Requisitos: [docs/requisitos.md](docs/requisitos.md). Pitch de 1 minuto: [docs/pitch.md](docs/pitch.md). Design do simulador: [docs/superpowers/specs/2026-10-21-simulador-design.md](docs/superpowers/specs/2026-10-21-simulador-design.md).
+Requisitos: [docs/requisitos.md](docs/requisitos.md). Pitch de 1 minuto: [docs/pitch.md](docs/pitch.md). Design do simulador: [docs/superpowers/specs/2026-10-21-simulador-design.md](docs/superpowers/specs/2026-10-21-simulador-design.md). Wireframes e mockups do site e do simulador: [docs/design/farol-wireframes.pdf](docs/design/farol-wireframes.pdf) e [docs/design/farol-mockups.pdf](docs/design/farol-mockups.pdf).
 
 ## Como rodar
 
