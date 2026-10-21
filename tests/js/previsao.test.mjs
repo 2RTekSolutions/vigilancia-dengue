@@ -54,41 +54,64 @@ test("preverSazonal devolve null com menos de 2 anos anteriores", () => {
   assert.equal(preverSazonal(semanas), null);
 });
 
-test("preverSazonal usa a mediana sazonal vezes o ajuste recente", () => {
-  // Anos anteriores: 10 casos por semana em 2022 e 30 em 2023 -> mediana 20.
-  // Últimas 4 semanas de 2024 têm 40 casos cada -> ajuste = 160 / 80 = 2.
+const perto = (valor, esperado) => assert.ok(Math.abs(valor - esperado) < 0.01, `${valor} != ${esperado}`);
+
+test("preverSazonal parte do nível recente e segue o formato sazonal", () => {
+  // Anos anteriores: 10 por semana em 2022 e 30 em 2023 -> mediana 20 em toda SE.
+  // Últimas 4 semanas de 2024: 40 cada -> nível 40; formato plano -> razão 1.
   const semanas = serie({
     2022: repetir(10, 52),
     2023: repetir(30, 52),
     2024: repetir(40, 8),
   });
   const prev = preverSazonal(semanas);
-  assert.equal(prev.ajuste, 2);
+  assert.equal(prev.nivelRecente, 40);
   assert.equal(prev.semanas.length, 4);
   assert.equal(prev.semanas[0].se, 9);
-  assert.equal(prev.semanas[0].valor, 40);
-  assert.equal(prev.semanas[0].inferior, 20);
-  assert.equal(prev.semanas[0].superior, 60);
+  perto(prev.semanas[0].valor, 40);
+  perto(prev.semanas[0].inferior, 40 * (11 / 21));
+  perto(prev.semanas[0].superior, 40 * (31 / 21));
 });
 
-test("preverSazonal limita o ajuste a 0,25 quando a entressafra zera", () => {
+test("preverSazonal acompanha a subida da época, limitada ao dobro", () => {
+  // Base 10 nas SE 1-8 e 100 a partir da SE 9 -> razão (100+1)/(10+1) > 2 -> limita em 2.
+  const ano = [...repetir(10, 8), ...repetir(100, 44)];
+  const semanas = serie({ 2022: ano, 2023: ano, 2024: repetir(10, 7) });
+  const prev = preverSazonal(semanas);
+  assert.equal(prev.nivelRecente, 10);
+  assert.ok(prev.semanas[1].valor <= 20 + 1e-9);
+  assert.ok(prev.semanas[1].valor > 10);
+});
+
+test("preverSazonal não desaba no pico de uma epidemia", () => {
+  // Histórico baixo e uma epidemia agora: a projeção fica perto do nível recente.
+  const semanas = serie({
+    2022: repetir(5, 52),
+    2023: repetir(5, 52),
+    2024: [10, 20, 40, 80, 300, 600, 900, 1600],
+  });
+  const prev = preverSazonal(semanas);
+  assert.equal(prev.nivelRecente, 850);
+  assert.ok(prev.semanas.every((p) => p.valor >= 850 * 0.5));
+});
+
+test("preverSazonal projeta zero quando a entressafra zera", () => {
   const semanas = serie({
     2022: repetir(10, 52),
     2023: repetir(30, 52),
     2024: repetir(0, 8),
   });
-  assert.equal(preverSazonal(semanas).ajuste, 0.25);
+  const prev = preverSazonal(semanas);
+  assert.ok(prev.semanas.every((p) => p.valor === 0 && p.inferior === 0 && p.superior === 0));
 });
 
-test("preverSazonal usa ajuste 1 quando a base sazonal é zero", () => {
+test("preverSazonal com base sazonal zero repete o nível recente", () => {
   const semanas = serie({
     2022: repetir(0, 52),
     2023: repetir(0, 52),
     2024: repetir(3, 8),
   });
-  const prev = preverSazonal(semanas);
-  assert.equal(prev.ajuste, 1);
-  assert.equal(prev.semanas[0].valor, 0);
+  perto(preverSazonal(semanas).semanas[0].valor, 3);
 });
 
 test("preverSazonal não lê semanas depois da última recebida", () => {

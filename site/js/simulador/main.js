@@ -86,10 +86,10 @@ function renderizarPrevisao(rec) {
       return `<li><span>SE ${p.se}/${p.ano}</span><span>~${numero.format(Math.round(p.valor))} casos (${numero.format(Math.round(p.inferior))}–${numero.format(Math.round(p.superior))})</span><span class="chip chip-pequeno" style="background:${nivel.cor};color:${nivel.texto}">Risco ${nivel.nome}</span></li>`;
     })
     .join("");
-  const ajuste = previsao.ajuste.toLocaleString("pt-BR", { maximumFractionDigits: 2 });
+  const nivel = numero.format(Math.round(previsao.nivelRecente));
   canvas.setAttribute("aria-label", `Casos das últimas 12 semanas e projeção simulada das próximas 4: ${previsao.semanas.map((p) => Math.round(p.valor)).join(", ")} casos.`);
   $("previsao-nota").textContent =
-    `Conta ilustrativa: mediana da mesma época nos anos anteriores, ajustada pelas últimas 4 semanas (×${ajuste}). ` +
+    `Conta ilustrativa: parte da média das últimas 4 semanas (${nivel} casos) e segue o formato da mesma época nos anos anteriores, entre metade e o dobro. ` +
     "A previsão de verdade é a entrega da Fase 6. A faixa de risco usa o histórico do próprio município e não é o critério do InfoDengue.";
 }
 

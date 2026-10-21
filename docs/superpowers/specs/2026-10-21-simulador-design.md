@@ -84,10 +84,12 @@ Formato:
 
 **Previsão sazonal (h = 1…4):**
 - Para a SE alvo *s*, pegar os casos das SE *s*−1, *s* e *s*+1 em cada ano anterior ao da referência, dentro do recorte.
-- Base = mediana desses valores. Faixa = percentis 25 e 75.
-- Ajuste = (casos das últimas 4 semanas reais) / (soma das bases sazonais dessas 4 semanas), limitado a [0,25; 4]. Se a soma das bases for 0, ajuste = 1.
-- Projeção = base × ajuste; faixa = percentis × ajuste.
+- Nível recente = média dos casos das últimas 4 semanas reais.
+- Base recente = média das medianas sazonais dessas 4 semanas.
+- Projeção = nível recente × (mediana do alvo + 1) / (base recente + 1), com a razão limitada a [0,5; 2].
+- Faixa = a mesma conta com os percentis 25 (razão em [0,25; 2]) e 75 (razão em [0,5; 4]).
 - Com menos de 2 anos anteriores, a previsão não aparece e o painel diz por quê.
+- (Revisado em 21/10/2026: a primeira versão, mediana × ajuste limitado a 4, desabava no pico de uma epidemia maior que o histórico, por exemplo Itanhaém SE 16/2024, com 1.687 casos projetados para cerca de 104.)
 
 **Faixa de risco (por município, para semanas projetadas):** calculada sobre todas as semanas do recorte. Abaixo da mediana = Baixo; até o percentil 75 = Atenção; até o 90 = Alerta; acima = Crítico. Não é o critério do InfoDengue, e o painel diz isso.
 
