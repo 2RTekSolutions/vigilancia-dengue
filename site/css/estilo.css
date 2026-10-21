@@ -238,6 +238,10 @@ h2 {
     margin: 4px 0;
 }
 
+.assinatura a {
+    text-decoration: none; /* sem o sublinhado entre as duas imagens do logo */
+}
+
 .assinatura img {
     vertical-align: middle;
 }

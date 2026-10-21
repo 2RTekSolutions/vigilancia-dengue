@@ -100,7 +100,7 @@ th, td { text-align: left; padding: 4px 8px; border-bottom: 1px solid var(--linh
 .rodape p { margin: 4px 0; }
 .rodape a { color: var(--ciano); }
 .assinatura { display: flex; align-items: center; gap: 8px; margin-top: 12px !important; color: var(--sobre-fundo); }
-.assinatura a { display: inline-flex; align-items: center; gap: 6px; }
+.assinatura a { display: inline-flex; align-items: center; gap: 6px; text-decoration: none; }
 
 button:focus-visible, select:focus-visible, input:focus-visible, a:focus-visible { outline: 2px solid var(--ciano); outline-offset: 2px; }
 
