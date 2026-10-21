@@ -1,0 +1,243 @@
+/* Estilo das páginas do site (o simulador tem o próprio arquivo, simulador.css). */
+/* Cores da identidade do FAROL:
+   azul-marinho #0e2245, ciano #38e4ae, azul #1d63b8, destaque #d9ed92 */
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    background-color: #0e2245;
+    color: #ffffff;
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 17px;
+    line-height: 1.6;
+}
+
+a {
+    color: #38e4ae;
+}
+
+img {
+    max-width: 100%;
+}
+
+/* Caixa central que segura o conteúdo de todas as páginas. */
+.container {
+    max-width: 960px;
+    margin: 0 auto;
+    padding: 0 16px;
+}
+
+/* Cabeçalho */
+.topo {
+    border-bottom: 3px solid #38e4ae;
+    padding: 12px 0;
+}
+
+.marca {
+    display: block;
+    height: 60px;
+}
+
+.menu {
+    list-style: none;
+    margin: 12px 0 0 0;
+    padding: 0;
+}
+
+.menu li {
+    display: inline-block;
+    margin: 0 4px 8px 0;
+}
+
+.menu a {
+    display: inline-block;
+    padding: 6px 12px;
+    border-radius: 6px;
+    color: #ffffff;
+    text-decoration: none;
+}
+
+.menu a:hover {
+    background-color: #1d63b8;
+}
+
+.menu a.ativo {
+    background-color: #102d57;
+    color: #38e4ae;
+}
+
+.menu a.destaque {
+    background-color: #d9ed92;
+    color: #0e2245;
+    font-weight: bold;
+}
+
+/* Conteúdo */
+main {
+    padding-bottom: 32px;
+}
+
+h1 {
+    font-size: 34px;
+    margin: 28px 0 8px 0;
+}
+
+h2 {
+    font-size: 24px;
+    margin: 32px 0 8px 0;
+    color: #38e4ae;
+}
+
+.chamada {
+    font-size: 20px;
+    color: #b8c7dd;
+}
+
+.abertura {
+    text-align: center;
+    padding-top: 16px;
+}
+
+.abertura img {
+    border-radius: 12px;
+}
+
+.lista li {
+    margin-bottom: 8px;
+}
+
+.botao {
+    display: inline-block;
+    margin: 8px 8px 0 0;
+    padding: 10px 20px;
+    border-radius: 8px;
+    background-color: #38e4ae;
+    color: #0e2245;
+    font-weight: bold;
+    text-decoration: none;
+}
+
+.botao:hover {
+    background-color: #00b4d8;
+}
+
+.botao-claro {
+    background-color: transparent;
+    border: 2px solid #38e4ae;
+    color: #38e4ae;
+}
+
+.botao-claro:hover {
+    background-color: #102d57;
+}
+
+/* Cartões brancos para tabelas e gráficos */
+.cartao {
+    background-color: #ffffff;
+    color: #1f2937;
+    border-radius: 10px;
+    padding: 16px 20px;
+    margin: 16px 0;
+    overflow-x: auto; /* no celular, a tabela larga rola dentro do cartão */
+}
+
+.cartao h2 {
+    color: #1d63b8;
+    margin-top: 0;
+}
+
+.cartao a {
+    color: #1d63b8;
+}
+
+/* As três perguntas da página O FAROL, lado a lado quando cabem. */
+.funcao {
+    display: inline-block;
+    vertical-align: top;
+    width: 290px;
+    min-height: 220px;
+    margin: 8px 8px 8px 0;
+}
+
+/* Tabela */
+.tabela {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.tabela caption {
+    text-align: left;
+    font-weight: bold;
+    margin-bottom: 8px;
+}
+
+.tabela th,
+.tabela td {
+    text-align: left;
+    padding: 8px;
+    border-bottom: 1px solid #e5e7eb;
+}
+
+.tabela th {
+    background-color: #0e2245;
+    color: #ffffff;
+}
+
+.tabela tbody tr:hover {
+    background-color: #f1f5fb;
+}
+
+.tabela td.maior {
+    background-color: #fde7e9;
+    color: #a8212b;
+    font-weight: bold;
+}
+
+.nota {
+    font-size: 14px;
+    color: #6b7280;
+}
+
+/* Espaço reservado para os gráficos do Power BI */
+.grafico {
+    margin: 16px 0;
+}
+
+.espaco-grafico {
+    background-color: #102d57;
+    border: 2px dashed #38e4ae;
+    border-radius: 10px;
+    color: #b8c7dd;
+    text-align: center;
+    padding: 100px 16px;
+}
+
+.grafico img {
+    display: block;
+    border-radius: 10px;
+}
+
+.grafico figcaption {
+    font-size: 14px;
+    color: #b8c7dd;
+    margin-top: 6px;
+}
+
+/* Rodapé */
+.rodape {
+    border-top: 1px solid #102d57;
+    padding: 16px 0 32px 0;
+    font-size: 14px;
+    color: #b8c7dd;
+}
+
+.rodape p {
+    margin: 4px 0;
+}
+
+.assinatura img {
+    vertical-align: middle;
+}
