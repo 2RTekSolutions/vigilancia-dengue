@@ -1,0 +1,109 @@
+:root {
+  color-scheme: light;
+  --fundo: #f5f6f7;
+  --superficie: #ffffff;
+  --tinta: #1f2937;
+  --tinta-2: #4b5563;
+  --tinta-3: #6b7280;
+  --linha: #e5e7eb;
+  --marca: #b20f17;
+  --serie: #2f6db5;
+  --raio: 10px;
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  background: var(--fundo);
+  color: var(--tinta);
+  font-family: "Inter", system-ui, sans-serif;
+  font-size: 15px;
+  line-height: 1.45;
+}
+
+h1, h2, h3 { margin: 0; }
+h2 { font-size: 1.15rem; color: var(--tinta-2); margin: 28px 0 12px; }
+h3 { font-size: 0.95rem; font-weight: 600; color: var(--tinta-2); }
+
+.topo {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 16px 24px;
+  background: var(--superficie);
+  border-bottom: 3px solid var(--marca);
+}
+.marca { display: flex; align-items: center; gap: 16px; }
+.marca-fatec { font-weight: 700; font-size: 1.6rem; color: var(--tinta-3); line-height: 1; }
+.marca-fatec small { display: block; font-size: 0.7rem; color: var(--marca); text-align: right; }
+.marca h1 { font-size: 1.35rem; }
+#titulo-municipio { color: var(--marca); }
+
+.controles { display: flex; flex-wrap: wrap; align-items: flex-end; gap: 16px; }
+.controle { display: flex; flex-direction: column; gap: 4px; font-size: 0.8rem; color: var(--tinta-3); }
+.controle select, .atalhos button, .semana-linha button {
+  font: inherit; font-size: 0.9rem; color: var(--tinta);
+  background: var(--superficie); border: 1px solid #cbd0d6; border-radius: 6px; padding: 6px 10px;
+  min-height: 36px; cursor: pointer;
+}
+.semana-linha { display: flex; align-items: center; gap: 6px; }
+.semana-linha input { width: 220px; accent-color: var(--marca); }
+#semana-rotulo { font-size: 0.85rem; color: var(--tinta); font-weight: 600; }
+.atalhos { display: flex; gap: 8px; }
+
+.faixa-simulador {
+  margin: 0; padding: 8px 24px; background: #fff7e0; color: #5c4400;
+  border-bottom: 1px solid #f0dfa8; font-size: 0.85rem;
+}
+
+main { max-width: 1280px; margin: 0 auto; padding: 0 24px 32px; }
+
+.cards { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 16px; }
+.card, .painel {
+  background: var(--superficie); border-radius: var(--raio); padding: 16px 20px;
+  box-shadow: 0 1px 2px rgb(0 0 0 / 0.06);
+}
+.card .valor { font-size: 2rem; font-weight: 700; margin: 8px 0 4px; }
+.card .detalhe { margin: 0; font-size: 0.82rem; color: var(--tinta-3); }
+.chip {
+  display: inline-block; font-size: 1rem; font-weight: 700; padding: 4px 12px;
+  border-radius: 6px; background: var(--linha);
+}
+.chip-pequeno { font-size: 0.75rem; padding: 2px 8px; border-radius: 4px; font-weight: 600; }
+
+.painel { margin-top: 16px; }
+.grafico { position: relative; height: 260px; margin-top: 12px; }
+
+.legenda { display: flex; flex-wrap: wrap; gap: 16px; list-style: none; padding: 0; margin: 12px 0 0; font-size: 0.82rem; color: var(--tinta-2); }
+.legenda li::before {
+  content: ""; display: inline-block; width: 10px; height: 10px; border-radius: 2px;
+  margin-right: 6px; background: var(--cor);
+}
+
+details { margin-top: 12px; font-size: 0.85rem; }
+summary { cursor: pointer; color: var(--tinta-2); }
+table { border-collapse: collapse; margin-top: 8px; width: 100%; max-width: 520px; }
+th, td { text-align: left; padding: 4px 8px; border-bottom: 1px solid var(--linha); font-variant-numeric: tabular-nums; }
+
+.rodape { max-width: 1280px; margin: 0 auto; padding: 16px 24px 32px; border-top: 1px solid var(--linha); font-size: 0.8rem; color: var(--tinta-3); }
+.rodape p { margin: 4px 0; }
+
+button:focus-visible, select:focus-visible, input:focus-visible { outline: 2px solid var(--serie); outline-offset: 2px; }
+
+@media (max-width: 900px) {
+  .cards { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+
+@media (max-width: 560px) {
+  .topo, .faixa-simulador { padding-left: 16px; padding-right: 16px; }
+  main { padding: 0 16px 24px; }
+  .cards { grid-template-columns: 1fr 1fr; gap: 10px; }
+  .card { padding: 12px 14px; }
+  .card .valor { font-size: 1.5rem; }
+  .semana-linha input { width: 100%; }
+  .controle-semana { flex: 1 1 100%; }
+  .marca h1 { font-size: 1.1rem; }
+}
