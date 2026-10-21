@@ -3,7 +3,8 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Simulador · Vigilância da Dengue</title>
+  <title>FAROL · Simulador da Vigilância</title>
+  <link rel="icon" href="data:,">
   <meta name="description" content="Simulação do sistema de vigilância da dengue: casos, previsão de risco e fila de denúncias por município.">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -14,8 +15,10 @@
 <body>
   <header class="topo">
     <div class="marca">
-      <span class="marca-fatec">Fatec <small>Olímpia</small></span>
-      <h1>Vigilância da Dengue <span id="titulo-municipio"></span></h1>
+      <h1>
+        <span class="marca-farol">FAR<span>O</span>L</span>
+        <span class="marca-sub">Vigilância da Dengue <span id="titulo-municipio"></span></span>
+      </h1>
     </div>
     <div class="controles">
       <label class="controle">
@@ -119,7 +122,7 @@
           <div id="mapa" role="region" aria-label="Mapa das denúncias simuladas"></div>
           <ul class="legenda">
             <li style="--cor:#a8212b">Nova</li>
-            <li style="--cor:#2f6db5">Agendada</li>
+            <li style="--cor:#1d63b8">Agendada</li>
             <li style="--cor:#9ca3af">Vistoriada</li>
             <li class="legenda-setor">Setor: quanto mais escuro, mais denúncias abertas</li>
           </ul>
@@ -139,7 +142,8 @@
   <footer class="rodape">
     <p>Fonte: <span id="rodape-fonte">InfoDengue (Fiocruz/FGV)</span> · dados até <span id="rodape-data">—</span></p>
     <p>Protótipo de demonstração. Não substitui o boletim oficial da Secretaria de Saúde. Com sintomas, procure a UBS.</p>
-    <p>Projeto de extensão · Desenvolvimento de Software Multiplataforma · Fatec Olímpia</p>
+    <p>FAROL: Ferramenta de Antecipação de Risco e Orientação Local · Projeto de extensão · Desenvolvimento de Software Multiplataforma · Fatec Olímpia</p>
+    <p class="assinatura"><span class="selo-2r" aria-hidden="true">2R</span>Desenvolvido por <a href="https://www.2rteksolutions.com.br">2RTek Solutions</a></p>
   </footer>
 
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
