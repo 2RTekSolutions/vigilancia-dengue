@@ -1,7 +1,7 @@
 :root {
   color-scheme: light;
   /* Identidade FAROL: página em azul-marinho, cards de dados brancos. */
-  --fundo: #0a2246;
+  --fundo: #0e2245;
   --fundo-2: #102d57;
   --sobre-fundo: #ffffff;
   --sobre-fundo-2: #b8c7dd;
@@ -46,11 +46,7 @@ h3 { font-size: 0.95rem; font-weight: 600; color: var(--tinta-2); }
 }
 .marca { display: flex; align-items: center; gap: 16px; }
 .marca h1 { display: flex; flex-direction: column; gap: 2px; }
-.marca-farol { font-weight: 700; font-size: 1.9rem; letter-spacing: 0.04em; line-height: 1; }
-.marca-farol span {
-  background: linear-gradient(135deg, var(--ciano), var(--ciano-2));
-  -webkit-background-clip: text; background-clip: text; color: transparent;
-}
+.marca-farol { display: block; height: 60px; width: auto; }
 .marca-sub { font-size: 0.95rem; font-weight: 500; color: var(--sobre-fundo-2); }
 #titulo-municipio { color: var(--ciano); }
 
@@ -104,11 +100,7 @@ th, td { text-align: left; padding: 4px 8px; border-bottom: 1px solid var(--linh
 .rodape p { margin: 4px 0; }
 .rodape a { color: var(--ciano); }
 .assinatura { display: flex; align-items: center; gap: 8px; margin-top: 12px !important; color: var(--sobre-fundo); }
-.selo-2r {
-  display: inline-flex; align-items: flex-end; justify-content: center; width: 28px; height: 28px;
-  border-radius: 7px; background: #6366f1; color: #fff; font-weight: 800; font-size: 0.8rem; padding-bottom: 4px;
-}
-.selo-2r::after { content: ""; width: 5px; height: 2px; background: #22c55e; margin-left: 1px; margin-bottom: 2px; }
+.assinatura a { display: inline-flex; align-items: center; gap: 6px; }
 
 button:focus-visible, select:focus-visible, input:focus-visible, a:focus-visible { outline: 2px solid var(--ciano); outline-offset: 2px; }
 
@@ -162,5 +154,4 @@ button:focus-visible, select:focus-visible, input:focus-visible, a:focus-visible
   .card .valor { font-size: 1.5rem; }
   .semana-linha input { width: 100%; }
   .controle-semana { flex: 1 1 100%; }
-  .marca-farol { font-size: 1.5rem; }
-}
+  .marca-farol { display: block; height: 60px; width: auto; }
