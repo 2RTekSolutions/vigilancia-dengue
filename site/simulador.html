@@ -1,0 +1,95 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Simulador · Vigilância da Dengue</title>
+  <meta name="description" content="Simulação do sistema de vigilância da dengue: casos, previsão de risco e fila de denúncias por município.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css">
+  <link rel="stylesheet" href="css/simulador.css">
+</head>
+<body>
+  <header class="topo">
+    <div class="marca">
+      <span class="marca-fatec">Fatec <small>Olímpia</small></span>
+      <h1>Vigilância da Dengue <span id="titulo-municipio"></span></h1>
+    </div>
+    <div class="controles">
+      <label class="controle">
+        <span>Município</span>
+        <select id="municipio"></select>
+      </label>
+      <div class="controle controle-semana">
+        <span id="semana-legenda">Semana de referência</span>
+        <div class="semana-linha">
+          <button type="button" id="semana-anterior" aria-label="Semana anterior">‹</button>
+          <input type="range" id="semana" min="0" max="0" value="0" aria-labelledby="semana-legenda">
+          <button type="button" id="semana-proxima" aria-label="Próxima semana">›</button>
+        </div>
+        <output id="semana-rotulo" for="semana"></output>
+      </div>
+      <div class="atalhos">
+        <button type="button" id="ir-pico">Maior pico</button>
+        <button type="button" id="ir-ultima">Última semana</button>
+      </div>
+    </div>
+  </header>
+
+  <p class="faixa-simulador" role="note">
+    <strong>SIMULADOR:</strong> casos e clima reais (InfoDengue); previsão, denúncias e mapa são simulados.
+  </p>
+
+  <main>
+    <section aria-labelledby="titulo-como">
+      <h2 id="titulo-como">Como estamos</h2>
+      <div class="cards">
+        <article class="card">
+          <h3>Casos na semana</h3>
+          <p class="valor" id="card-casos">—</p>
+          <p class="detalhe" id="card-casos-detalhe"></p>
+        </article>
+        <article class="card">
+          <h3>Nível de alerta</h3>
+          <p class="valor"><span class="chip" id="card-nivel">—</span></p>
+          <p class="detalhe">Classificação do InfoDengue</p>
+        </article>
+        <article class="card">
+          <h3>Rt (número de reprodução)</h3>
+          <p class="valor" id="card-rt">—</p>
+          <p class="detalhe" id="card-rt-detalhe"></p>
+        </article>
+        <article class="card">
+          <h3>Tendência</h3>
+          <p class="valor" id="card-tendencia">—</p>
+          <p class="detalhe" id="card-tendencia-detalhe">Últimas 4 semanas contra as 4 anteriores</p>
+        </article>
+      </div>
+      <article class="painel">
+        <h3>Casos por semana · últimas 52 semanas</h3>
+        <div class="grafico"><canvas id="grafico-barras" role="img"></canvas></div>
+        <ul class="legenda" id="legenda-niveis"></ul>
+        <details>
+          <summary>Ver as últimas 12 semanas em tabela</summary>
+          <table>
+            <thead><tr><th>Semana</th><th>Início</th><th>Casos</th><th>Nível</th></tr></thead>
+            <tbody id="tabela-semanas"></tbody>
+          </table>
+        </details>
+      </article>
+    </section>
+  </main>
+
+  <footer class="rodape">
+    <p>Fonte: <span id="rodape-fonte">InfoDengue (Fiocruz/FGV)</span> · dados até <span id="rodape-data">—</span></p>
+    <p>Protótipo de demonstração. Não substitui o boletim oficial da Secretaria de Saúde. Com sintomas, procure a UBS.</p>
+    <p>Projeto de extensão · Desenvolvimento de Software Multiplataforma · Fatec Olímpia</p>
+  </footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
+  <script type="module" src="js/simulador/main.js"></script>
+</body>
+</html>
