@@ -2,6 +2,8 @@
 import { carregarJSON, recortar, formatarData, NIVEIS } from "./dados.js";
 import { tendencia, preverSazonal, faixaRisco, nivelPorCasos, correlacaoDefasada } from "./previsao.js";
 import { desenharBarras, desenharPrevisao, desenharClima } from "./graficos.js";
+import { gerarDenuncias, ordenarFila, proximaSituacao } from "./denuncias.js";
+import { iniciarMapa, mostrarMunicipio, mostrarDenuncias, destacar, corDaSituacao } from "./mapa.js";
 
 const $ = (id) => document.getElementById(id);
 const numero = new Intl.NumberFormat("pt-BR");
@@ -102,6 +104,47 @@ function renderizarClima(rec) {
     "Associação, não causa: o calor das semanas anteriores costuma vir antes do aumento de casos.";
 }
 
+const ROTULO_ACAO = { nova: "Agendar", agendada: "Vistoriar", vistoriada: "Vistoriada" };
+
+function selecionarDenuncia(id) {
+  for (const item of $("fila").children) {
+    item.classList.toggle("selecionada", Number(item.dataset.id) === id);
+  }
+  $("fila").querySelector(`[data-id="${id}"]`)?.scrollIntoView({ block: "nearest" });
+  destacar(id);
+}
+
+function renderizarFila() {
+  const fila = ordenarFila(estado.denuncias);
+  const abertas = fila.filter((d) => d.situacao !== "vistoriada").length;
+  $("fila-resumo").textContent =
+    `${abertas} aberta(s) de ${fila.length}. Ordem por prioridade: tipo do criadouro, dias em espera e quantas denúncias o setor já tem.`;
+  $("fila").innerHTML = fila
+    .map(
+      (d) => `<li data-id="${d.id}">
+        <span class="bolinha" style="--cor:${corDaSituacao(d.situacao)}" aria-hidden="true"></span>
+        <span class="tipo">#${d.id} · ${d.tipo}</span>
+        <span class="meta">Setor ${d.setor} · ${d.idadeDias} dia(s) · ${d.situacao} · prioridade ${d.prioridade.toLocaleString("pt-BR")}</span>
+        <button type="button" data-acao="${d.id}" ${d.situacao === "vistoriada" ? "disabled" : ""}>${ROTULO_ACAO[d.situacao]}</button>
+      </li>`,
+    )
+    .join("");
+  mostrarDenuncias(estado.denuncias, estado.municipio.area_urbana, selecionarDenuncia);
+}
+
+function renderizarDenuncias(rec) {
+  const atual = rec.at(-1);
+  estado.denuncias = gerarDenuncias({
+    geocode: estado.municipio.geocode,
+    ano: atual.ano,
+    se: atual.se,
+    casos: atual.casos,
+    areaUrbana: estado.municipio.area_urbana,
+    contorno: estado.municipio.contorno,
+  });
+  renderizarFila();
+}
+
 function renderizar() {
   const atual = semanaAtual();
   $("semana").value = estado.indice;
@@ -110,6 +153,7 @@ function renderizar() {
   renderizarComoEstamos(rec);
   renderizarPrevisao(rec);
   renderizarClima(rec);
+  renderizarDenuncias(rec);
 }
 
 async function trocarMunicipio(geocode) {
@@ -121,6 +165,7 @@ async function trocarMunicipio(geocode) {
   $("rodape-fonte").textContent = fonte;
   $("rodape-data").textContent = formatarData(semanas.at(-1).data);
   estado.indice = semanas.length - 1;
+  mostrarMunicipio(estado.municipio.contorno, estado.municipio.area_urbana);
   renderizar();
 }
 
@@ -138,6 +183,19 @@ function montarLegenda() {
 
 async function iniciar() {
   montarLegenda();
+  iniciarMapa("mapa");
+  $("fila").addEventListener("click", (e) => {
+    const botao = e.target.closest("button[data-acao]");
+    const item = e.target.closest("li[data-id]");
+    if (botao) {
+      const denuncia = estado.denuncias.find((d) => d.id === Number(botao.dataset.acao));
+      denuncia.situacao = proximaSituacao(denuncia.situacao);
+      renderizarFila();
+      selecionarDenuncia(denuncia.id);
+    } else if (item) {
+      selecionarDenuncia(Number(item.dataset.id));
+    }
+  });
   const municipios = await carregarJSON(`${PASTA}/municipios.json`);
   $("municipio").innerHTML = municipios
     .map((m) => `<option value="${m.geocode}">${m.nome}/${m.uf}</option>`)
