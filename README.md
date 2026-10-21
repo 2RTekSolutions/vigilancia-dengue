@@ -146,7 +146,7 @@ O ETL grava num PostgreSQL 17 que roda no container `dengue-db` do homelab. O ba
 
 | Item | Valor |
 | --- | --- |
-| Host | `10.114.66.23` (rede interna do homelab) |
+| Host | IP do container na rede interna do homelab: `incus list dengue-db` no homelab, ou peça no grupo |
 | Porta | `5432` |
 | Banco | `dengue` |
 | Usuário | `dengue_etl` |
@@ -157,10 +157,10 @@ Quem pode conectar: o container `dengue` (onde o ETL roda) e o próprio homelab.
 Para conectar do desktop ou do notebook:
 
 1. Copie `.env.example` para `.env` e preencha `PGPASSWORD`.
-2. Abra o túnel e deixe o terminal aberto: `ssh -N -L 5433:10.114.66.23:5432 homelab`.
+2. Abra o túnel e deixe o terminal aberto: `ssh -N -L 5433:<IP do dengue-db>:5432 homelab`.
 3. Em outro terminal, na raiz do repositório: `set -a && source .env && set +a && psql`.
 
-As variáveis do `.env` (`PGHOST`, `PGPORT`, `PGDATABASE`, `PGUSER`, `PGPASSWORD`) são as que o `psql` e o `psycopg` leem sozinhos. No container `dengue`, o `.env` usa `PGHOST=10.114.66.23` e `PGPORT=5432`.
+As variáveis do `.env` (`PGHOST`, `PGPORT`, `PGDATABASE`, `PGUSER`, `PGPASSWORD`) são as que o `psql` e o `psycopg` leem sozinhos. No container `dengue`, o `.env` usa `PGHOST=<IP do dengue-db>` e `PGPORT=5432`.
 
 ## Como trabalhamos
 
