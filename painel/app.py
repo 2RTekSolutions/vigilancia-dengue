@@ -41,7 +41,7 @@ st.markdown(
         <div class="direita">
             <div>
                 <b>Projeto de extensão</b> · DSM · Fatec Olímpia<br>
-                <span class="nomes">Renan Croffi e Raquel Duarte</span>
+                <span class="nomes">Raquel Duarte e Renan Croffi</span>
             </div>
             <img class="empresa" src="data:image/png;base64,{LOGO_2R}" alt="2RTek">
         </div>
